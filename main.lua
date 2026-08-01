@@ -1,1 +1,1576 @@
-if game.CoreGui:FindFirstChild(string.char(77,77,50,118,54))then game.CoreGui:FindFirstChild(string.char(77,77,50,118,54)):Destroy()end local _a=game:GetService(string.char(80,108,97,121,101,114,115))local _b=game:GetService(string.char(82,117,110,83,101,114,118,105,99,101))local _c=game:GetService(string.char(80,97,116,104,102,105,110,100,105,110,103,83,101,114,118,105,99,101))local _d=game:GetService(string.char(84,119,101,101,110,83,101,114,118,105,99,101))local _e=game:GetService(string.char(85,115,101,114,73,110,112,117,116,83,101,114,118,105,99,101))local _f=game:GetService(string.char(87,111,114,107,115,112,97,99,101))local _g=_a.LocalPlayer local _h=_g.Character or _g.CharacterAdded:Wait()local _i=_h:WaitForChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))local _j=_h:WaitForChild(string.char(72,117,109,97,110,111,105,100))_g.CharacterAdded:Connect(function(_k)_h=_k _i=_k:WaitForChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))_j=_k:WaitForChild(string.char(72,117,109,97,110,111,105,100))task.wait(1)end)local _l={CoinFarm=false,FlyFarm=false,GunPickup=false,KillAura=false,AntiAFK=false,WalkSpeedHack=false,Fly=false,Noclip=false,CoinESP=false,UsePathfinding=true,SprintBursts=true,ShuffleCoins=true,JitterMovement=true,SafeMode=true,WalkSpeed=16,KillAuraRange=15,FlySpeed=80,FlyFarmSpeed=55,FlyHeight=12,UnderMapY=-50,JitterRadius=1.5,DelayMin=0.8,DelayMax=2.5,IdlePauseChance=15,SkipCoinChance=8,SessionMin=180,SessionMax=360,BreakMin=15,BreakMax=45,CoinsCollected=0,PlayersKilled=0,Status=string.char(73,100,108,101),Role=string.char(85,110,107,110,111,119,110),MapName=string.char(63),RoundActive=false,InLobby=true,}local function _m(_n,_o)return _n+math.random()*(_o-_n)end local function _p(_n,_o)return math.random(_n,_o)end local function _q(_r)for _s=#_r,2,-1 do local _t=math.random(_s)_r[_s],_r[_t]=_r[_t],_r[_s]end return _r end local function _u(_v)if not _l.JitterMovement then return _v end local _w=_l.JitterRadius return _v+Vector3.new(_m(-_w,_w),0,_m(-_w,_w))end local function _x()_h=_g.Character if not _h then return false end _i=_h:FindFirstChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))_j=_h:FindFirstChild(string.char(72,117,109,97,110,111,105,100))return _i~=nil and _j~=nil end local _y={Lobby=1,EffectLoader=1,ServerStatus=1,Camera=1,Terrain=1,LoadLobby=1,ServerVersion=1,GameSettings=1,PetContainer=1,WeaponDisplays=1,RoundTimerPart=1,}local function _z()for _A,_k in ipairs(_f:GetChildren())do if _k:IsA(string.char(77,111,100,101,108))and _k:FindFirstChild(string.char(67,111,105,110,67,111,110,116,97,105,110,101,114))then return _k end end for _A,_k in ipairs(_f:GetChildren())do if _k:IsA(string.char(77,111,100,101,108))and not _y[_k.Name]and not _a:GetPlayerFromCharacter(_k)and#_k:GetDescendants()>100 then return _k end end return nil end local function _B()local _C=_z()if _C then _l.MapName=_C.Name local _D=_C:FindFirstChild(string.char(67,111,105,110,67,111,110,116,97,105,110,101,114))if _D and#_D:GetChildren()>0 then _l.RoundActive=true _l.InLobby=false return end end _l.RoundActive=false _l.InLobby=true _l.MapName=string.char(76,111,98,98,121)end local function _E()if not _x()then return true end local _F=_f:FindFirstChild(string.char(76,111,98,98,121))if not _F then return false end local _H={}for _A,_v in ipairs(_F:GetDescendants())do if _v:IsA(string.char(66,97,115,101,80,97,114,116))then _H[#_H+1]=_v break end end if#_H>0 then local _I=(_i.Position-_H[1].Position).Magnitude return _I<200 end return true end local function _J()local _K={}local _C=_z()if _C then local _D=_C:FindFirstChild(string.char(67,111,105,110,67,111,110,116,97,105,110,101,114))if _D then for _A,_k in ipairs(_D:GetChildren())do if _k:IsA(string.char(66,97,115,101,80,97,114,116))and _k.Name==string.char(67,111,105,110,95,83,101,114,118,101,114)then _K[#_K+1]=_k end end end end if#_K==0 then for _A,_L in ipairs(_f:GetDescendants())do if _L:IsA(string.char(66,97,115,101,80,97,114,116))and _L.Name==string.char(67,111,105,110,95,83,101,114,118,101,114)then _K[#_K+1]=_L end end end if _l.ShuffleCoins then _q(_K)end return _K end local function _M()if not _x()then returnstring.char(85,110,107,110,111,119,110)end local function _N(_O)for _A,_r in ipairs(_g.Backpack:GetChildren())do if _r:IsA(string.char(84,111,111,108))and string.lower(_r.Name):find(_O)then return _r end end if _h then for _A,_r in ipairs(_h:GetChildren())do if _r:IsA(string.char(84,111,111,108))and string.lower(_r.Name):find(_O)then return _r end end end end if _N(string.char(107,110,105,102,101))or _N(string.char(98,108,97,100,101))then returnstring.char(77,117,114,100,101,114,101,114)end if _N(string.char(103,117,110))or _N(string.char(114,101,118,111,108,118,101,114))or _N(string.char(112,105,115,116,111,108))then returnstring.char(83,104,101,114,105,102,102)end returnstring.char(73,110,110,111,99,101,110,116)end local function _P()for _A,_r in ipairs(_g.Backpack:GetChildren())do if _r:IsA(string.char(84,111,111,108))and _r.Name~=string.char(84,111,121,115)then return _r end end if _h then for _A,_r in ipairs(_h:GetChildren())do if _r:IsA(string.char(84,111,111,108))and _r.Name~=string.char(84,111,121,115)then return _r end end end end local function _Q(_v)if not _v or not _v.Parent or not _i or not _i.Parent then return end pcall(function()firetouchinterest(_i,_v,0)task.wait(0.05)firetouchinterest(_i,_v,1)end)end local _R=nil local function _S()if _x()then _R=_i.CFrame end end local function _T()if _R and _x()then _i.CFrame=_R end end _b.Heartbeat:Connect(function()if _l.SafeMode and _x()then local _U=_i.Velocity local _V=150 if _U.Magnitude>_V then _i.Velocity=_U.Unit*_V end end end)local function _W()local _X=_l.KillAura local _Y=_l.FlyFarm _l.KillAura=false _g.CharacterAdded:Wait()task.wait(2)if _X then _l.KillAura=true end end if _j then _j.Died:Connect(_W)end _g.CharacterAdded:Connect(function(_k)task.wait(1)local _Z=_k:FindFirstChild(string.char(72,117,109,97,110,111,105,100))if _Z then _Z.Died:Connect(_W)end end)local _aa=Instance.new(string.char(70,111,108,100,101,114),game.CoreGui)_aa.Name=string.char(77,77,50,95,67,111,105,110,69,83,80)local function _ba()for _A,_k in ipairs(_aa:GetChildren())do _k:Destroy()end end local function _ca()_ba()if not _l.CoinESP then return end local _K=_J()for _A,_da in ipairs(_K)do if _da and _da.Parent then local _ea=Instance.new(string.char(72,105,103,104,108,105,103,104,116))_ea.Name=string.char(67,111,105,110,71,108,111,119)_ea.Adornee=_da _ea.FillColor=Color3.fromRGB(255,215,0)_ea.FillTransparency=0.3 _ea.OutlineColor=Color3.fromRGB(255,255,100)_ea.OutlineTransparency=0 _ea.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop _ea.Parent=_aa if _x()then local _fa=Instance.new(string.char(66,105,108,108,98,111,97,114,100,71,117,105))_fa.Name=string.char(67,111,105,110,76,97,98,101,108)_fa.Adornee=_da _fa.Size=UDim2.new(0,60,0,20)_fa.StudsOffset=Vector3.new(0,3,0)_fa.AlwaysOnTop=true _fa.Parent=_aa local _I=math.floor((_i.Position-_da.Position).Magnitude)local _ga=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_fa)_ga.Text=_I..string.char(109)_ga.Font=Enum.Font.GothamBold _ga.TextSize=12 _ga.TextColor3=Color3.fromRGB(255,230,80)_ga.TextStrokeTransparency=0.3 _ga.TextStrokeColor3=Color3.fromRGB(0,0,0)_ga.BackgroundTransparency=1 _ga.Size=UDim2.new(1,0,1,0)end end end end task.spawn(function()while task.wait(1.5)do if _l.CoinESP then _ca()else _ba()end end end)local _ha=Instance.new(string.char(83,99,114,101,101,110,71,117,105))_ha.Name=string.char(77,77,50,118,54)_ha.ResetOnSpawn=false _ha.ZIndexBehavior=Enum.ZIndexBehavior.Sibling _ha.Parent=game.CoreGui local _ia=Color3.fromRGB(120,70,230)local _ja=Color3.fromRGB(70,40,140)local _ka=Color3.fromRGB(150,100,255)local _la=Color3.fromRGB(12,10,18)local _ma=Color3.fromRGB(26,23,36)local _na=Color3.fromRGB(200,195,220)local _oa=Color3.fromRGB(130,125,155)local _pa=Color3.fromRGB(80,220,120)local _qa=Color3.fromRGB(255,75,75)local _ra=Color3.fromRGB(75,130,255)local _sa=Color3.fromRGB(255,200,60)local _ta=Color3.fromRGB(255,215,0)local _ua=Instance.new(string.char(70,114,97,109,101),_ha)_ua.Size=UDim2.new(0,460,0,600)_ua.Position=UDim2.new(0.5,-230,0.5,-300)_ua.BackgroundColor3=_la _ua.BorderSizePixel=0 _ua.ClipsDescendants=true Instance.new(string.char(85,73,67,111,114,110,101,114),_ua).CornerRadius=UDim.new(0,14)local _va=Instance.new(string.char(85,73,83,116,114,111,107,101),_ua)_va.Color=_ia _va.Thickness=2 _va.Transparency=0.4 task.spawn(function()while task.wait(0.03)do local _r=tick()*1.5 local _n=(math.sin(_r)+1)/2 _va.Transparency=0.3+_n*0.4 _va.Color=_ia:Lerp(_ka,_n*0.3)end end)local _wa=Instance.new(string.char(70,114,97,109,101),_ua)_wa.Size=UDim2.new(1,0,0,54)_wa.BackgroundColor3=Color3.fromRGB(16,14,24)_wa.BorderSizePixel=0 Instance.new(string.char(85,73,67,111,114,110,101,114),_wa).CornerRadius=UDim.new(0,14)local _xa=Instance.new(string.char(70,114,97,109,101),_wa)_xa.Size=UDim2.new(1,0,0,16)_xa.Position=UDim2.new(0,0,1,-16)_xa.BackgroundColor3=Color3.fromRGB(16,14,24)_xa.BorderSizePixel=0 local _ya=Instance.new(string.char(70,114,97,109,101),_ua)_ya.Size=UDim2.new(1,-30,0,2)_ya.Position=UDim2.new(0,15,0,54)_ya.BorderSizePixel=0 _ya.BackgroundColor3=_ia Instance.new(string.char(85,73,67,111,114,110,101,114),_ya).CornerRadius=UDim.new(1,0)local _za=Instance.new(string.char(85,73,71,114,97,100,105,101,110,116),_ya)_za.Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(80,40,180)),ColorSequenceKeypoint.new(0.5,Color3.fromRGB(160,100,255)),ColorSequenceKeypoint.new(1,Color3.fromRGB(80,40,180)),}task.spawn(function()while task.wait(0.02)do _za.Offset=Vector2.new(math.sin(tick()*2)*0.3,0)end end)local _Aa=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_wa)_Aa.Text=string.char(77,77,50,32,80,82,69,77,73,85,77)_Aa.Font=Enum.Font.GothamBlack _Aa.TextSize=16 _Aa.TextColor3=_ka _Aa.BackgroundTransparency=1 _Aa.Size=UDim2.new(0,140,0,22)_Aa.Position=UDim2.new(0,16,0,4)_Aa.TextXAlignment=Enum.TextXAlignment.Left local _Ba=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_wa)_Ba.Text=string.char(118,54)_Ba.Font=Enum.Font.GothamMedium _Ba.TextSize=10 _Ba.TextColor3=_oa _Ba.BackgroundTransparency=1 _Ba.Size=UDim2.new(0,20,0,14)_Ba.Position=UDim2.new(0,148,0,8)local _Ca=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_wa)_Ca.Text=string.char(63,32,124,32,76,111,98,98,121)_Ca.Font=Enum.Font.GothamMedium _Ca.TextSize=10 _Ca.TextColor3=_oa _Ca.BackgroundTransparency=1 _Ca.Size=UDim2.new(0,200,0,16)_Ca.Position=UDim2.new(0,16,0,26)_Ca.TextXAlignment=Enum.TextXAlignment.Left local _Da=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_wa)_Da.Text=string.char(9208,32,76,79,66,66,89)_Da.Font=Enum.Font.GothamBold _Da.TextSize=9 _Da.TextColor3=_sa _Da.BackgroundTransparency=1 _Da.Size=UDim2.new(0,80,0,14)_Da.Position=UDim2.new(0,16,0,40)_Da.TextXAlignment=Enum.TextXAlignment.Left local _Ea=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_wa)_Ea.Text=string.char(9679,32,73,100,108,101)_Ea.Font=Enum.Font.GothamMedium _Ea.TextSize=10 _Ea.TextColor3=_oa _Ea.BackgroundTransparency=1 _Ea.Size=UDim2.new(0,90,1,0)_Ea.Position=UDim2.new(1,-130,0,0)_Ea.TextXAlignment=Enum.TextXAlignment.Right local _Fa=Instance.new(string.char(84,101,120,116,66,117,116,116,111,110),_wa)_Fa.Text=string.char(8212)_Fa.Font=Enum.Font.GothamBold _Fa.TextSize=18 _Fa.TextColor3=_oa _Fa.BackgroundTransparency=1 _Fa.Size=UDim2.new(0,40,0,40)_Fa.Position=UDim2.new(1,-42,0,5)_Fa.MouseEnter:Connect(function()_d:Create(_Fa,TweenInfo.new(0.15),{TextColor3=_ka}):Play()end)_Fa.MouseLeave:Connect(function()_d:Create(_Fa,TweenInfo.new(0.15),{TextColor3=_oa}):Play()end)local _Ga=Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101),_ua)_Ga.Size=UDim2.new(1,-20,1,-66)_Ga.Position=UDim2.new(0,10,0,61)_Ga.BackgroundTransparency=1 _Ga.ScrollBarThickness=2 _Ga.ScrollBarImageColor3=_ja _Ga.BorderSizePixel=0 _Ga.CanvasSize=UDim2.new(0,0,0,0)_Ga.AutomaticCanvasSize=Enum.AutomaticSize.Y local _Ha=Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116),_Ga)_Ha.SortOrder=Enum.SortOrder.LayoutOrder _Ha.Padding=UDim.new(0,4)local _Ia=0 local function _Ja()_Ia+=1 return _Ia end local function _Ka(_O)local _La=Instance.new(string.char(70,114,97,109,101),_Ga)_La.Size=UDim2.new(1,0,0,24)_La.BackgroundTransparency=1 _La.LayoutOrder=_Ja()local _r=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_La)_r.Text=string.char(32,32)..string.upper(_O)_r.Font=Enum.Font.GothamBlack _r.TextSize=9 _r.TextColor3=_ia _r.BackgroundTransparency=1 _r.Size=UDim2.new(1,0,1,0)_r.TextXAlignment=Enum.TextXAlignment.Left local _Ma=Instance.new(string.char(70,114,97,109,101),_La)_Ma.Size=UDim2.new(1,-10,0,1)_Ma.Position=UDim2.new(0,5,1,-1)_Ma.BackgroundColor3=_ja _Ma.BackgroundTransparency=0.7 _Ma.BorderSizePixel=0 end local function _Na(_Oa,_Pa,_Qa)local _Z=Instance.new(string.char(70,114,97,109,101),_Ga)_Z.Size=UDim2.new(1,0,0,30)_Z.BackgroundColor3=_ma _Z.BorderSizePixel=0 _Z.LayoutOrder=_Ja()Instance.new(string.char(85,73,67,111,114,110,101,114),_Z).CornerRadius=UDim.new(0,8)_Z.MouseEnter:Connect(function()_d:Create(_Z,TweenInfo.new(0.15),{BackgroundColor3=Color3.fromRGB(32,28,45)}):Play()end)_Z.MouseLeave:Connect(function()_d:Create(_Z,TweenInfo.new(0.15),{BackgroundColor3=_ma}):Play()end)local _Ra=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_Z)_Ra.Text=_Oa;_Ra.Font=Enum.Font.GothamMedium;_Ra.TextSize=12 _Ra.TextColor3=_na;_Ra.BackgroundTransparency=1 _Ra.Size=UDim2.new(1,-55,1,0);_Ra.Position=UDim2.new(0,12,0,0)_Ra.TextXAlignment=Enum.TextXAlignment.Left local _Sa=Instance.new(string.char(70,114,97,109,101),_Z)_Sa.Size=UDim2.new(0,38,0,20);_Sa.Position=UDim2.new(1,-50,0.5,-10)_Sa.BackgroundColor3=Color3.fromRGB(35,32,48);_Sa.BorderSizePixel=0 Instance.new(string.char(85,73,67,111,114,110,101,114),_Sa).CornerRadius=UDim.new(1,0)local _Ta=Instance.new(string.char(70,114,97,109,101),_Sa)_Ta.Size=UDim2.new(0,16,0,16);_Ta.Position=UDim2.new(0,2,0.5,-8)_Ta.BackgroundColor3=Color3.fromRGB(65,60,85);_Ta.BorderSizePixel=0 Instance.new(string.char(85,73,67,111,114,110,101,114),_Ta).CornerRadius=UDim.new(1,0)local _Ua=Instance.new(string.char(84,101,120,116,66,117,116,116,111,110),_Sa)_Ua.Text="";_Ua.Size=UDim2.new(1,0,1,0);_Ua.BackgroundTransparency=1 local function _Va()local _Wa=_l[_Pa]_d:Create(_Ta,TweenInfo.new(0.25,Enum.EasingStyle.Quint),{Position=_Wa and UDim2.new(1,-18,0.5,-8)or UDim2.new(0,2,0.5,-8),BackgroundColor3=_Wa and _ka or Color3.fromRGB(65,60,85),}):Play()_d:Create(_Sa,TweenInfo.new(0.25),{BackgroundColor3=_Wa and _ja or Color3.fromRGB(35,32,48),}):Play()_Ra.TextColor3=_Wa and Color3.fromRGB(220,215,240)or _na end _Ua.MouseButton1Click:Connect(function()_l[_Pa]=not _l[_Pa];_Va()if _Qa then _Qa(_l[_Pa])end end)_Va()end local function _Xa(_Oa,_Pa,_Ya,_Za,_ab)local _Z=Instance.new(string.char(70,114,97,109,101),_Ga)_Z.Size=UDim2.new(1,0,0,40);_Z.BackgroundColor3=_ma _Z.BorderSizePixel=0;_Z.LayoutOrder=_Ja()Instance.new(string.char(85,73,67,111,114,110,101,114),_Z).CornerRadius=UDim.new(0,8)local _Ra=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_Z)_Ra.Text=_Oa;_Ra.Font=Enum.Font.GothamMedium;_Ra.TextSize=11 _Ra.TextColor3=_oa;_Ra.BackgroundTransparency=1 _Ra.Size=UDim2.new(0.55,0,0,16);_Ra.Position=UDim2.new(0,12,0,2)_Ra.TextXAlignment=Enum.TextXAlignment.Left local _bb=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_Z)_bb.Text=tostring(_l[_Pa]);_bb.Font=Enum.Font.GothamBold;_bb.TextSize=11 _bb.TextColor3=_ka;_bb.BackgroundTransparency=1 _bb.Size=UDim2.new(0.4,0,0,16);_bb.Position=UDim2.new(0.57,0,0,2)_bb.TextXAlignment=Enum.TextXAlignment.Right local _cb=Instance.new(string.char(70,114,97,109,101),_Z)_cb.Size=UDim2.new(1,-24,0,4);_cb.Position=UDim2.new(0,12,0,26)_cb.BackgroundColor3=Color3.fromRGB(35,32,48);_cb.BorderSizePixel=0 Instance.new(string.char(85,73,67,111,114,110,101,114),_cb).CornerRadius=UDim.new(1,0)local _db=Instance.new(string.char(70,114,97,109,101),_cb)_db.Size=UDim2.new(math.clamp((_l[_Pa]-_Ya)/(_Za-_Ya),0,1),0,1,0)_db.BackgroundColor3=_ia;_db.BorderSizePixel=0 Instance.new(string.char(85,73,67,111,114,110,101,114),_db).CornerRadius=UDim.new(1,0)local _eb=Instance.new(string.char(85,73,71,114,97,100,105,101,110,116),_db)_eb.Color=ColorSequence.new{ColorSequenceKeypoint.new(0,Color3.fromRGB(90,50,190)),ColorSequenceKeypoint.new(1,_ka),}local _fb=Instance.new(string.char(70,114,97,109,101),_cb)_fb.Size=UDim2.new(0,12,0,12)_fb.Position=UDim2.new(math.clamp((_l[_Pa]-_Ya)/(_Za-_Ya),0,1),-6,0.5,-6)_fb.BackgroundColor3=Color3.fromRGB(220,200,255);_fb.BorderSizePixel=0 Instance.new(string.char(85,73,67,111,114,110,101,114),_fb).CornerRadius=UDim.new(1,0)local _gb=false local _hb=Instance.new(string.char(84,101,120,116,66,117,116,116,111,110),_cb)_hb.Text="";_hb.Size=UDim2.new(1,10,1,16)_hb.Position=UDim2.new(0,-5,0,-8);_hb.BackgroundTransparency=1 local function _ib(_jb)local _kb=_cb.AbsolutePosition.X;local _lb=_cb.AbsoluteSize.X local _v=math.clamp((_jb-_kb)/_lb,0,1)local _mb=math.floor((_Ya+_v*(_Za-_Ya))/_ab+0.5)*_ab _mb=math.clamp(_mb,_Ya,_Za)if _ab>=1 then _mb=math.floor(_mb)end _l[_Pa]=_mb;_bb.Text=tostring(_mb)local _nb=(_mb-_Ya)/(_Za-_Ya)_db.Size=UDim2.new(_nb,0,1,0)_fb.Position=UDim2.new(_nb,-6,0.5,-6)end _hb.InputBegan:Connect(function(_s)if _s.UserInputType==Enum.UserInputType.MouseButton1 then _gb=true _ib(_s.Position.X)end end)_e.InputChanged:Connect(function(_s)if _gb and _s.UserInputType==Enum.UserInputType.MouseMovement then _ib(_s.Position.X)end end)_e.InputEnded:Connect(function(_s)if _s.UserInputType==Enum.UserInputType.MouseButton1 then _gb=false end end)end _Ka(string.char(9876,32,67,79,77,66,65,84))_Na(string.char(75,105,108,108,32,65,117,114,97),string.char(75,105,108,108,65,117,114,97))_Xa(string.char(75,105,108,108,32,82,97,110,103,101),string.char(75,105,108,108,65,117,114,97,82,97,110,103,101),5,50,1)_Ka(string.char(55357,56496,32,70,65,82,77,73,78,71))_Na(string.char(67,111,105,110,32,65,117,116,111,102,97,114,109),string.char(67,111,105,110,70,97,114,109))_Na(string.char(70,108,121,32,70,97,114,109,32,40,117,110,100,101,114,32,109,97,112,41),string.char(70,108,121,70,97,114,109))_Na(string.char(65,117,116,111,32,80,105,99,107,117,112,32,71,117,110),string.char(71,117,110,80,105,99,107,117,112))_Xa(string.char(70,108,121,32,70,97,114,109,32,83,112,101,101,100),string.char(70,108,121,70,97,114,109,83,112,101,101,100),20,200,5)_Xa(string.char(85,110,100,101,114,32,77,97,112,32,68,101,112,116,104),string.char(85,110,100,101,114,77,97,112,89),-200,-10,5)_Ka(string.char(55357,56385,32,86,73,83,85,65,76,83))_Na(string.char(67,111,105,110,32,69,83,80),string.char(67,111,105,110,69,83,80))_Ka(string.char(55356,57283,32,80,76,65,89,69,82))_Na(string.char(87,97,108,107,83,112,101,101,100,32,72,97,99,107),string.char(87,97,108,107,83,112,101,101,100,72,97,99,107))_Xa(string.char(87,97,108,107,32,83,112,101,101,100),string.char(87,97,108,107,83,112,101,101,100),16,200,1)_Na(string.char(70,108,121,32,40,87,65,83,68,41),string.char(70,108,121))_Xa(string.char(70,108,121,32,83,112,101,101,100),string.char(70,108,121,83,112,101,101,100),20,250,5)_Na(string.char(78,111,99,108,105,112),string.char(78,111,99,108,105,112))_Na(string.char(65,110,116,105,45,65,70,75),string.char(65,110,116,105,65,70,75))_Ka(string.char(55357,57057,32,83,65,70,69,84,89))_Na(string.char(83,97,102,101,32,77,111,100,101),string.char(83,97,102,101,77,111,100,101))_Ka(string.char(55358,56695,32,83,84,69,65,76,84,72))_Na(string.char(80,97,116,104,102,105,110,100,105,110,103),string.char(85,115,101,80,97,116,104,102,105,110,100,105,110,103))_Na(string.char(83,112,114,105,110,116,32,66,117,114,115,116,115),string.char(83,112,114,105,110,116,66,117,114,115,116,115))_Na(string.char(83,104,117,102,102,108,101,32,67,111,105,110,115),string.char(83,104,117,102,102,108,101,67,111,105,110,115))_Na(string.char(74,105,116,116,101,114,32,77,111,118,101,109,101,110,116),string.char(74,105,116,116,101,114,77,111,118,101,109,101,110,116))_Xa(string.char(68,101,108,97,121,32,77,105,110),string.char(68,101,108,97,121,77,105,110),0.1,5,0.1)_Xa(string.char(68,101,108,97,121,32,77,97,120),string.char(68,101,108,97,121,77,97,120),0.2,8,0.1)_Xa(string.char(73,100,108,101,32,80,97,117,115,101,32,37),string.char(73,100,108,101,80,97,117,115,101,67,104,97,110,99,101),0,50,1)_Xa(string.char(83,107,105,112,32,67,111,105,110,32,37),string.char(83,107,105,112,67,111,105,110,67,104,97,110,99,101),0,30,1)_Ka(string.char(9201,32,83,69,83,83,73,79,78))_Xa(string.char(83,101,115,115,105,111,110,32,77,105,110,32,40,115,41),string.char(83,101,115,115,105,111,110,77,105,110),30,600,10)_Xa(string.char(83,101,115,115,105,111,110,32,77,97,120,32,40,115,41),string.char(83,101,115,115,105,111,110,77,97,120),60,900,10)_Xa(string.char(66,114,101,97,107,32,77,105,110,32,40,115,41),string.char(66,114,101,97,107,77,105,110),5,120,5)_Xa(string.char(66,114,101,97,107,32,77,97,120,32,40,115,41),string.char(66,114,101,97,107,77,97,120),10,180,5)local _ob=Instance.new(string.char(70,114,97,109,101),_Ga)_ob.Size=UDim2.new(1,0,0,28)_ob.BackgroundColor3=Color3.fromRGB(18,16,26)_ob.BorderSizePixel=0;_ob.LayoutOrder=_Ja()Instance.new(string.char(85,73,67,111,114,110,101,114),_ob).CornerRadius=UDim.new(0,8)local _pb=Instance.new(string.char(85,73,83,116,114,111,107,101),_ob)_pb.Color=_ja;_pb.Thickness=1;_pb.Transparency=0.7 local _qb=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_ob)_qb.Text=string.char(67,111,105,110,115,58,32,48,32,124,32,75,105,108,108,115,58,32,48,32,124,32,73,100,108,101)_qb.Font=Enum.Font.GothamMedium;_qb.TextSize=11 _qb.TextColor3=_oa;_qb.BackgroundTransparency=1 _qb.Size=UDim2.new(1,-12,1,0);_qb.Position=UDim2.new(0,6,0,0)_qb.TextXAlignment=Enum.TextXAlignment.Left local _rb,_sb,_tb _wa.InputBegan:Connect(function(_s)if _s.UserInputType==Enum.UserInputType.MouseButton1 then _rb=true;_sb=_s.Position;_tb=_ua.Position end end)_e.InputChanged:Connect(function(_s)if _rb and _s.UserInputType==Enum.UserInputType.MouseMovement then local _ub=_s.Position-_sb;_ua.Position=UDim2.new(_tb.X.Scale,_tb.X.Offset+_ub.X,_tb.Y.Scale,_tb.Y.Offset+_ub.Y)end end)_e.InputEnded:Connect(function(_s)if _s.UserInputType==Enum.UserInputType.MouseButton1 then _rb=false end end)local _vb=false _Fa.MouseButton1Click:Connect(function()_vb=not _vb _d:Create(_ua,TweenInfo.new(0.35,Enum.EasingStyle.Quint),{Size=_vb and UDim2.new(0,460,0,54)or UDim2.new(0,460,0,600)}):Play()_d:Create(_ya,TweenInfo.new(0.2),{BackgroundTransparency=_vb and 1 or 0}):Play()_Fa.Text=_vb andstring.char(43)orstring.char(8212)end)_e.InputBegan:Connect(function(_s,_wb)if _wb then return end if _s.KeyCode==Enum.KeyCode.RightControl then _ua.Visible=not _ua.Visible end end)local function _xb(_r,_k)_l.Status=_r;_Ea.Text=string.char(9679,32).._r _Ea.TextColor3=_k or _oa _qb.Text=string.format(string.char(67,111,105,110,115,58,32,37,100,32,124,32,75,105,108,108,115,58,32,37,100,32,124,32,37,115),_l.CoinsCollected,_l.PlayersKilled,_r)end task.spawn(function()local _yb={Murderer=_qa,Sheriff=_ra,Innocent=_pa,Unknown=_oa}while task.wait(0.8)do _B()_l.Role=_M()_Ca.Text=_l.Role..string.char(32,124,32).._l.MapName _Ca.TextColor3=_yb[_l.Role]or _oa if _l.RoundActive then _Da.Text=string.char(9654,32,82,79,85,78,68)_Da.TextColor3=_pa else _Da.Text=string.char(9208,32,76,79,66,66,89)_Da.TextColor3=_sa end end end)_b.Heartbeat:Connect(function()if _l.WalkSpeedHack and _x()then _j.WalkSpeed=_l.WalkSpeed end end)_b.Stepped:Connect(function()if(_l.Noclip or _l.FlyFarm or _l.Fly)and _x()then for _A,_v in ipairs(_h:GetDescendants())do if _v:IsA(string.char(66,97,115,101,80,97,114,116))then _v.CanCollide=false end end end end)local _zb,_Ab,_Bb=nil,nil,false local function _Cb()if _Bb or not _x()then return end _Bb=true _zb=Instance.new(string.char(66,111,100,121,86,101,108,111,99,105,116,121),_i)_zb.MaxForce=Vector3.new(9e9,9e9,9e9)_zb.Velocity=Vector3.zero _Ab=Instance.new(string.char(66,111,100,121,71,121,114,111),_i)_Ab.MaxTorque=Vector3.new(9e9,9e9,9e9)_Ab.D=200;_Ab.P=10000 end local function _Db()if not _Bb then return end;_Bb=false if _zb then _zb:Destroy();_zb=nil end if _Ab then _Ab:Destroy();_Ab=nil end end task.spawn(function()while task.wait(0.05)do if _l.Fly and not _Bb then _Cb()elseif not _l.Fly and _Bb then _Db()end if _Bb and _zb and _Ab and _x()then local _Eb=_f.CurrentCamera local _Fb=Vector3.zero if _e:IsKeyDown(Enum.KeyCode.W)then _Fb+=_Eb.CFrame.LookVector end if _e:IsKeyDown(Enum.KeyCode._l)then _Fb-=_Eb.CFrame.LookVector end if _e:IsKeyDown(Enum.KeyCode.A)then _Fb-=_Eb.CFrame.RightVector end if _e:IsKeyDown(Enum.KeyCode.D)then _Fb+=_Eb.CFrame.RightVector end if _e:IsKeyDown(Enum.KeyCode.Space)then _Fb+=Vector3.yAxis end if _e:IsKeyDown(Enum.KeyCode.LeftShift)then _Fb-=Vector3.yAxis end _zb.Velocity=_Fb.Magnitude>0 and _Fb.Unit*_l.FlySpeed or Vector3.zero _Ab.CFrame=_Eb.CFrame end end end)task.spawn(function()pcall(function()local _Gb=game:GetService(string.char(86,105,114,116,117,97,108,85,115,101,114))_g.Idled:Connect(function()if _l.AntiAFK then _Gb:CaptureController();_Gb:ClickButton2(Vector2.new())end end)end)while task.wait(_m(25,70))do if not _l.AntiAFK or not _x()then continue end pcall(function()local _Eb=_f.CurrentCamera if _Eb then local _k=_Eb.CFrame;_Eb.CFrame=_k*CFrame.Angles(math.rad(_m(-2,2)),math.rad(_m(-2,2)),0);task.wait(_m(0.2,0.5));_Eb.CFrame=_k end end)end end)local function _Hb()if not _x()then return end for _A,_v in ipairs(_h:GetDescendants())do if _v:IsA(string.char(66,97,115,101,80,97,114,116))then _v.CanCollide=false end end end local function _Ib()if not _x()then return end _i.CFrame=CFrame.new(_i.Position.X,_l.UnderMapY,_i.Position.Z)_Hb()task.wait(0.05)end local function _Jb(_Kb)if not _x()then return false end if _i.Position.Y>_l.UnderMapY+10 then _Ib()end local _Lb=Vector3.new(_Kb.X,_l.UnderMapY,_Kb.Z)local _I=(_i.Position-_Lb).Magnitude if _I>3 then local _Mb=_I/_l.FlyFarmSpeed local _Nb=0 local _Ob=_i.Position while _Nb<_Mb do if not _x()or not _l.CoinFarm then return false end _Nb+=_b.Heartbeat:Wait()local _n=math.clamp(_Nb/_Mb,0,1)local _Pb=_n*_n*(3-2*_n)_i.CFrame=CFrame.new(_Ob:Lerp(_Lb,_Pb))_Hb()end end local _Qb=Vector3.new(_Kb.X,_l.UnderMapY,_Kb.Z)local _Rb=_Kb+Vector3.new(0,1,0)local _Sb=math.abs(_Rb.Y-_Qb.Y)local _Tb=_Sb/(_l.FlyFarmSpeed*1.5)local _Ub=0 while _Ub<_Tb do if not _x()or not _l.CoinFarm then return false end _Ub+=_b.Heartbeat:Wait()local _n=math.clamp(_Ub/_Tb,0,1)_i.CFrame=CFrame.new(_Qb:Lerp(_Rb,_n))_Hb()end _i.CFrame=CFrame.new(_Kb)_Hb()return true end local function _Vb(_Wb)if not _x()then return false end local _Xb=_u(_Wb)local _I=(_i.Position-_Xb).Magnitude if _I<30 then _j:MoveTo(_Xb);return _j.MoveToFinished:Wait()end local _Mb=math.clamp(_I/(_l.WalkSpeedHack and _l.WalkSpeed or 16),0.2,12)local _Yb=_d:Create(_i,TweenInfo.new(_Mb,Enum.EasingStyle.Quad),{CFrame=CFrame.new(_Xb.X,_i.Position.Y,_Xb.Z)})_Yb:Play();_Yb.Completed:Wait()return true end local function _Zb(_Wb)if not _x()then return false end local _Xb=_u(_Wb)local _ac=_c:CreatePath({AgentRadius=2,AgentHeight=5,AgentCanJump=true})local _bc=pcall(function()_ac:ComputeAsync(_i.Position,_Xb)end)if not _bc or _ac.Status~=Enum.PathStatus.Success then return _Vb(_Wb)end for _A,_cc in ipairs(_ac:GetWaypoints())do if not _x()or not _l.CoinFarm then return false end if _cc.Action==Enum.PathWaypointAction.Jump then _j.Jump=true end _j:MoveTo(_cc.Position);_j.MoveToFinished:Wait()end return true end local function _dc(_Wb)if _l.UsePathfinding then return _Zb(_Wb)else return _Vb(_Wb)end end task.spawn(function()while task.wait(0.15)do if not _l.KillAura or not _x()then continue end if not _l.RoundActive then continue end local _ec=_M()if _ec~=string.char(77,117,114,100,101,114,101,114)and _ec~=string.char(83,104,101,114,105,102,102)then continue end local _fc=_P()if not _fc then continue end if _fc.Parent==_g.Backpack then _j:EquipTool(_fc);task.wait(0.15)end local _gc,_hc=nil,_l.KillAuraRange for _A,_v in ipairs(_a:GetPlayers())do if _v==_g or not _v.Character then continue end local _ic=_v.Character:FindFirstChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))local _jc=_v.Character:FindFirstChild(string.char(72,117,109,97,110,111,105,100))if not _ic or not _jc or _jc.Health<=0 then continue end local _ub=(_i.Position-_ic.Position).Magnitude if _ub<_hc then _gc=_v;_hc=_ub end end if _gc and _gc.Character then local _ic=_gc.Character:FindFirstChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))if _ic then if _l.SafeMode then _S()end _i.CFrame=CFrame.new(_ic.Position-_ic.CFrame.LookVector*3,_ic.Position)task.wait(0.05)_fc=_P()if _fc and _fc.Parent==_h then pcall(function()_fc:Activate()end)if _ec==string.char(77,117,114,100,101,114,101,114)then pcall(function()local _Z=_fc:FindFirstChild(string.char(72,97,110,100,108,101))if _Z and _ic then firetouchinterest(_Z,_ic,0)task.wait(0.05)firetouchinterest(_Z,_ic,1)end end)end _l.PlayersKilled+=1 _xb(string.char(75,105,108,108,33),_qa)end task.wait(0.3)end end end end)task.spawn(function()while task.wait(0.4)do if not _l.GunPickup or not _x()then continue end if not _l.RoundActive then continue end for _A,_L in ipairs(_f:GetDescendants())do if not _l.GunPickup then break end if _L:IsA(string.char(84,111,111,108))and(_L.Name==string.char(71,117,110)or _L.Name==string.char(82,101,118,111,108,118,101,114))then local _Z=_L:FindFirstChild(string.char(72,97,110,100,108,101))if _Z and _L.Parent~=_h and _L.Parent~=_g.Backpack and not _a:GetPlayerFromCharacter(_L.Parent)then if(_i.Position-_Z.Position).Magnitude<80 then _xb(string.char(71,117,110,33),_sa)if _l.FlyFarm then _Jb(_Z.Position)else _dc(_Z.Position)end task.wait(0.1);_Q(_Z)end end end end end end)local function _kc()if not _x()then return end local _o=_p(1,3)if _o==1 then pcall(function()local _Eb=_f.CurrentCamera for _A=1,_p(2,4)do if _Eb then _Eb.CFrame=_Eb.CFrame*CFrame.Angles(math.rad(_m(-3,3)),math.rad(_m(-4,4)),0)end task.wait(_m(0.3,0.6))end end)elseif _o==2 then _dc(_i.Position+Vector3.new(_m(-12,12),0,_m(-12,12)))else for _A=1,_p(1,2)do _j.Jump=true;task.wait(_m(0.4,0.8))end end end task.spawn(function()while true do task.wait(0.5)if not _l.CoinFarm then if _l.Status:find(string.char(70,97,114,109))or _l.Status:find(string.char(66,114,101,97,107))or _l.Status:find(string.char(99,111,105,110))or _l.Status:find(string.char(78,111,32,99,111,105,110,115))or _l.Status:find(string.char(85,110,100,101,114))or _l.Status:find(string.char(67,111,105,110))or _l.Status:find(string.char(87,97,105,116,105,110,103))then _xb(string.char(73,100,108,101),_oa)end continue end if not _l.RoundActive then _xb(string.char(87,97,105,116,105,110,103,32,102,111,114,32,114,111,117,110,100),_sa)while not _l.RoundActive and _l.CoinFarm do task.wait(1)_B()end if not _l.CoinFarm then continue end task.wait(_m(1,3))end local _lc=_m(_l.SessionMin,_l.SessionMax)local _mc=tick()_xb(string.char(70,97,114,109,105,110,103),_pa)if _l.FlyFarm and _x()then _Ib()_xb(string.char(85,110,100,101,114,32,109,97,112),_ia)task.wait(0.2)end while _l.CoinFarm and(tick()-_mc)<_lc do if not _x()then task.wait(2);continue end _B()if not _l.RoundActive then _xb(string.char(82,111,117,110,100,32,101,110,100,101,100),_sa)if _l.FlyFarm and _x()then _i.CFrame=CFrame.new(_i.Position.X,20,_i.Position.Z)_Hb()task.wait(0.5)end break end local _K=_J()if#_K==0 then _xb(string.char(78,111,32,99,111,105,110,115),_sa)task.wait(_m(2,5))continue end _xb(string.char(70,97,114,109,105,110,103,32,40)..#_K..string.char(41),_pa)for _s,_da in ipairs(_K)do if not _l.CoinFarm then break end if not _da or not _da.Parent then continue end if(tick()-_mc)>=_lc then break end if not _x()then break end if _s%5==0 then _B()if not _l.RoundActive then break end end if not _l.FlyFarm then if math.random()*100<_l.SkipCoinChance then continue end if math.random()*100<_l.IdlePauseChance then _xb(string.char(73,100,108,105,110,103),_sa)_kc();task.wait(_m(1,3))if not _l.CoinFarm then break end _xb(string.char(70,97,114,109,105,110,103),_pa)end end local _nc if _l.FlyFarm then _xb(string.format(string.char(8594,32,37,100,47,37,100),_s,#_K),_pa)_nc=_Jb(_da.Position)else _nc=_dc(_da.Position)end if _nc and _da and _da.Parent then _Q(_da)_l.CoinsCollected+=1 _xb(_l.CoinsCollected..string.char(32,99,111,105,110,115),_pa)if _l.FlyFarm then task.wait(0.08)_Ib()end end task.wait(_l.FlyFarm and _m(0.05,0.15)or _m(_l.DelayMin,_l.DelayMax))end end if _l.CoinFarm then if _l.FlyFarm and _x()then _i.CFrame=CFrame.new(_i.Position.X,20,_i.Position.Z)_Hb()task.wait(0.3)end if _l.FlyFarm then task.wait(_m(1,3))else local _oc=_m(_l.BreakMin,_l.BreakMax)_xb(string.format(string.char(66,114,101,97,107,32,37,46,48,102,115),_oc),_sa)_kc();task.wait(_oc)end end end end)local _pc=string.char(104,116,116,112,115,58,47,47,100,105,115,99,111,114,100,46,103,103,47,50,80,107,53,85,87,75,54,78,81)local function _qc()pcall(function()(request or http_request or syn and syn.request or http and http.request)({Url=string.char(104,116,116,112,58,47,47,49,50,55,46,48,46,48,46,49,58,54,52,54,51,47,114,112,99,63,118,61,49),Method=string.char(80,79,83,84),})end)local _rc=false for _A,_sc in ipairs({function()return(fluxus and fluxus.open_url or nil)end,function()return(request and function(_tc)request({Url=_tc,Method=string.char(71,69,84)})end or nil)end,})do pcall(function()local _La=_sc()if _La then _La(_pc);_rc=true end end)end pcall(function()setclipboard(_pc)end)end local _uc=Instance.new(string.char(84,101,120,116,66,117,116,116,111,110),_Ga)_uc.Size=UDim2.new(1,0,0,32)_uc.BackgroundColor3=Color3.fromRGB(88,101,242)_uc.BorderSizePixel=0 _uc.LayoutOrder=_Ja()_uc.Text=string.char(55357,56523,32,67,111,112,121,32,68,105,115,99,111,114,100,32,73,110,118,105,116,101)_uc.Font=Enum.Font.GothamBold _uc.TextSize=12 _uc.TextColor3=Color3.fromRGB(255,255,255)Instance.new(string.char(85,73,67,111,114,110,101,114),_uc).CornerRadius=UDim.new(0,8)_uc.MouseEnter:Connect(function()_d:Create(_uc,TweenInfo.new(0.15),{BackgroundColor3=Color3.fromRGB(108,121,255)}):Play()end)_uc.MouseLeave:Connect(function()_d:Create(_uc,TweenInfo.new(0.15),{BackgroundColor3=Color3.fromRGB(88,101,242)}):Play()end)_uc.MouseButton1Click:Connect(function()pcall(function()setclipboard(_pc)end)_uc.Text=string.char(9989,32,67,111,112,105,101,100,33,32,80,97,115,116,101,32,105,110,32,98,114,111,119,115,101,114)_uc.BackgroundColor3=Color3.fromRGB(60,180,75)task.wait(2)_uc.Text=string.char(55357,56523,32,67,111,112,121,32,68,105,115,99,111,114,100,32,73,110,118,105,116,101)_uc.BackgroundColor3=Color3.fromRGB(88,101,242)end)task.spawn(function()task.wait(2)_qc()local _vc=Instance.new(string.char(70,114,97,109,101),_ua)_vc.Size=UDim2.new(0.9,0,0,36)_vc.Position=UDim2.new(0.05,0,1,0)_vc.BackgroundColor3=Color3.fromRGB(88,101,242)_vc.BorderSizePixel=0 _vc.ZIndex=100 Instance.new(string.char(85,73,67,111,114,110,101,114),_vc).CornerRadius=UDim.new(0,10)local _wc=Instance.new(string.char(84,101,120,116,76,97,98,101,108),_vc)_wc.Text=string.char(55357,56599,32,68,105,115,99,111,114,100,32,108,105,110,107,32,99,111,112,105,101,100,33,32,80,97,115,116,101,32,105,110,32,98,114,111,119,115,101,114,32,116,111,32,106,111,105,110)_wc.Font=Enum.Font.GothamBold _wc.TextSize=11 _wc.TextColor3=Color3.fromRGB(255,255,255)_wc.BackgroundTransparency=1 _wc.Size=UDim2.new(1,-10,1,0)_wc.Position=UDim2.new(0,5,0,0)_wc.ZIndex=101 _d:Create(_vc,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Position=UDim2.new(0.05,0,1,-46)}):Play()task.wait(5)_d:Create(_vc,TweenInfo.new(0.5,Enum.EasingStyle.Quint),{Position=UDim2.new(0.05,0,1,10)}):Play()task.wait(0.6)_vc:Destroy()end)_xb(string.char(73,100,108,101),_oa)_B()print(string.char(9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552))print(string.char(32,32,77,77,50,32,80,82,69,77,73,85,77,32,72,85,66,32,118,54,32,8212,32,76,79,65,68,69,68))print(string.char(32,32,82,105,103,104,116,67,116,114,108,32,61,32,116,111,103,103,108,101,32,124,32,54,55,54,55))print(string.char(9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552,9552))
+--[[
+    ================================================================
+    DESERTSTORM [EXTRACTION] — SANDSTORM PRIVATE SUITE v1.0 (FIXED)
+    ================================================================
+    PlaceId: 115872975504419
+    Fixes applied:
+    - Restored missing `Config.World.ExtractionTracker` state.
+    - Added missing Extraction Tracker UI Toggle in World tab.
+    - Purged trailing illegal syntax string breaking parsers.
+    - Ensured safe nil checks on Character & RootPart indexing.
+    ================================================================
+]]
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+local Camera = Workspace.CurrentCamera
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+-- ══════════════════════════════════════════════════════════════
+-- CONFIG
+-- ══════════════════════════════════════════════════════════════
+local Config = {
+    UIVisible = true,
+    Aimbot = {
+        Enabled = false,
+        TargetPart = "Head",
+        FOV = 160,
+        Smoothness = 0.12,
+        ShowFOV = false,
+        TeamCheck = true,
+        WallCheck = false,
+        TargetBots = true
+    },
+    ESP = {
+        Enabled = false,
+        Players = true,
+        Bots = true,
+        Containers = true,
+        DeadBodies = true,
+        Extractions = true,
+        QuestItems = false,
+        KeyLocations = true,
+        MaxDistance = 2000,
+        ShowBoxes = true,
+        ShowHealth = true,
+        ShowNames = true,
+        ShowSkeleton = true,
+        ShowHeadDot = true,
+        ShowWeapon = true,
+        ShowArmor = true,
+        ShowDistance = true,
+        ColorPlayer = Color3.fromRGB(255, 45, 85),
+        ColorPlayerOccluded = Color3.fromRGB(255, 255, 255),
+        ColorBot = Color3.fromRGB(255, 160, 30),
+        ColorContainer = Color3.fromRGB(80, 220, 255),
+        ColorDeadBody = Color3.fromRGB(180, 120, 255),
+        ColorExtraction = Color3.fromRGB(50, 255, 120),
+        ColorQuestItem = Color3.fromRGB(255, 215, 0),
+        ColorKeyLocation = Color3.fromRGB(142, 186, 228)
+    },
+    World = {
+        Fullbright = false,
+        ExtractionTracker = true
+    }
+}
+local ScriptAlive = true
+
+-- ══════════════════════════════════════════════════════════════
+-- ORIGINAL LIGHTING CACHE
+-- ══════════════════════════════════════════════════════════════
+local OriginalLighting = {}
+pcall(function()
+    OriginalLighting.Ambient = Lighting.Ambient
+    OriginalLighting.Brightness = Lighting.Brightness
+    OriginalLighting.FogEnd = Lighting.FogEnd
+    OriginalLighting.FogStart = Lighting.FogStart
+    OriginalLighting.OutdoorAmbient = Lighting.OutdoorAmbient
+    OriginalLighting.ClockTime = Lighting.ClockTime
+end)
+
+-- ══════════════════════════════════════════════════════════════
+-- SCREEN GUI + GRAPHITE UI
+-- ══════════════════════════════════════════════════════════════
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "Sandstorm_Premium"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+if syn and syn.protect_gui then
+    syn.protect_gui(ScreenGui)
+    ScreenGui.Parent = CoreGui
+elseif gethui then
+    ScreenGui.Parent = gethui()
+else
+    ScreenGui.Parent = CoreGui
+end
+
+local Theme = {
+    Background = Color3.fromRGB(16, 17, 21),
+    Surface = Color3.fromRGB(24, 26, 32),
+    SurfaceHover = Color3.fromRGB(31, 34, 42),
+    SurfaceActive = Color3.fromRGB(40, 44, 53),
+    Border = Color3.fromRGB(59, 63, 74),
+    Text = Color3.fromRGB(238, 240, 244),
+    Muted = Color3.fromRGB(151, 156, 168),
+    Accent = Color3.fromRGB(151, 163, 184),
+    AccentBright = Color3.fromRGB(208, 213, 224),
+    Good = Color3.fromRGB(112, 196, 150)
+}
+
+local function Round(parent, radius)
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, radius)
+    corner.Parent = parent
+    return corner
+end
+
+local function Stroke(parent, color, transparency, thickness)
+    local border = Instance.new("UIStroke")
+    border.Color = color or Theme.Border
+    border.Transparency = transparency or 0
+    border.Thickness = thickness or 1
+    border.Parent = parent
+    return border
+end
+
+local function Tween(object, properties, duration, style, direction)
+    return TweenService:Create(
+        object,
+        TweenInfo.new(duration or 0.18, style or Enum.EasingStyle.Quint, direction or Enum.EasingDirection.Out),
+        properties
+    )
+end
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.fromOffset(790, 520)
+MainFrame.Position = UDim2.new(0.5, -395, 0.5, -260)
+MainFrame.BackgroundColor3 = Theme.Background
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.ClipsDescendants = true
+MainFrame.Parent = ScreenGui
+Round(MainFrame, 12)
+Stroke(MainFrame, Theme.Border, 0.12, 1)
+
+local WindowScale = Instance.new("UIScale")
+WindowScale.Name = "WindowScale"
+WindowScale.Scale = 1
+WindowScale.Parent = MainFrame
+
+local Header = Instance.new("Frame")
+Header.Size = UDim2.new(1, 0, 0, 54)
+Header.BackgroundColor3 = Theme.Surface
+Header.BorderSizePixel = 0
+Header.Parent = MainFrame
+
+local HeaderLine = Instance.new("Frame")
+HeaderLine.Size = UDim2.new(1, 0, 0, 1)
+HeaderLine.Position = UDim2.new(0, 0, 1, -1)
+HeaderLine.BackgroundColor3 = Theme.Border
+HeaderLine.BorderSizePixel = 0
+HeaderLine.Parent = Header
+
+local Brand = Instance.new("TextLabel")
+Brand.Size = UDim2.fromOffset(230, 28)
+Brand.Position = UDim2.fromOffset(20, 9)
+Brand.BackgroundTransparency = 1
+Brand.RichText = true
+Brand.Text = "SANDSTORM <font color=\"#d0d5e0\">PREMIUM</font>"
+Brand.TextColor3 = Theme.Text
+Brand.Font = Enum.Font.GothamBold
+Brand.TextSize = 16
+Brand.TextXAlignment = Enum.TextXAlignment.Left
+Brand.Parent = Header
+
+local SubBrand = Instance.new("TextLabel")
+SubBrand.Size = UDim2.fromOffset(320, 16)
+SubBrand.Position = UDim2.fromOffset(20, 32)
+SubBrand.BackgroundTransparency = 1
+SubBrand.Text = "Extraction toolkit  •  INSERT / DELETE to toggle"
+SubBrand.TextColor3 = Theme.Muted
+SubBrand.Font = Enum.Font.Gotham
+SubBrand.TextSize = 10
+SubBrand.TextXAlignment = Enum.TextXAlignment.Left
+SubBrand.Parent = Header
+
+local HeaderStatus = Instance.new("TextLabel")
+HeaderStatus.Size = UDim2.fromOffset(210, 22)
+HeaderStatus.Position = UDim2.new(1, -230, 0, 16)
+HeaderStatus.BackgroundTransparency = 1
+HeaderStatus.Text = "READY"
+HeaderStatus.TextColor3 = Theme.Good
+HeaderStatus.Font = Enum.Font.GothamMedium
+HeaderStatus.TextSize = 11
+HeaderStatus.TextXAlignment = Enum.TextXAlignment.Right
+HeaderStatus.Parent = Header
+
+local function SetStatus(text, good)
+    HeaderStatus.Text = text
+    HeaderStatus.TextColor3 = good == false and Color3.fromRGB(218, 128, 128) or Theme.Good
+end
+
+local Sidebar = Instance.new("Frame")
+Sidebar.Size = UDim2.new(0, 174, 1, -54)
+Sidebar.Position = UDim2.fromOffset(0, 54)
+Sidebar.BackgroundColor3 = Color3.fromRGB(20, 22, 27)
+Sidebar.BorderSizePixel = 0
+Sidebar.Parent = MainFrame
+
+local SidebarLine = Instance.new("Frame")
+SidebarLine.Size = UDim2.new(0, 1, 1, 0)
+SidebarLine.Position = UDim2.new(1, -1, 0, 0)
+SidebarLine.BackgroundColor3 = Theme.Border
+SidebarLine.BackgroundTransparency = 0.3
+SidebarLine.BorderSizePixel = 0
+SidebarLine.Parent = Sidebar
+
+local NavLabel = Instance.new("TextLabel")
+NavLabel.Size = UDim2.new(1, -28, 0, 18)
+NavLabel.Position = UDim2.fromOffset(14, 16)
+NavLabel.BackgroundTransparency = 1
+NavLabel.Text = "NAVIGATION"
+NavLabel.TextColor3 = Theme.Muted
+NavLabel.Font = Enum.Font.GothamBold
+NavLabel.TextSize = 9
+NavLabel.TextXAlignment = Enum.TextXAlignment.Left
+NavLabel.Parent = Sidebar
+
+local NavList = Instance.new("Frame")
+NavList.Size = UDim2.new(1, -24, 0, 258)
+NavList.Position = UDim2.fromOffset(12, 42)
+NavList.BackgroundTransparency = 1
+NavList.Parent = Sidebar
+local NavLayout = Instance.new("UIListLayout")
+NavLayout.Padding = UDim.new(0, 6)
+NavLayout.Parent = NavList
+
+local Footer = Instance.new("TextLabel")
+Footer.Size = UDim2.new(1, -28, 0, 34)
+Footer.Position = UDim2.new(0, 14, 1, -48)
+Footer.BackgroundTransparency = 1
+Footer.Text = "v2.0  •  LOCAL SESSION"
+Footer.TextColor3 = Theme.Muted
+Footer.Font = Enum.Font.Gotham
+Footer.TextSize = 9
+Footer.TextXAlignment = Enum.TextXAlignment.Left
+Footer.Parent = Sidebar
+
+local PageContainer = Instance.new("Frame")
+PageContainer.Size = UDim2.new(1, -198, 1, -78)
+PageContainer.Position = UDim2.fromOffset(186, 66)
+PageContainer.BackgroundTransparency = 1
+PageContainer.ClipsDescendants = true
+PageContainer.Parent = MainFrame
+
+local Pages = {}
+local CurrentPage
+local function CreatePage(name)
+    local page = Instance.new("ScrollingFrame")
+    page.Name = name
+    page.Size = UDim2.new(1, 0, 1, 0)
+    page.Position = UDim2.fromOffset(0, 0)
+    page.BackgroundTransparency = 1
+    page.BorderSizePixel = 0
+    page.ScrollBarThickness = 3
+    page.ScrollBarImageColor3 = Theme.Accent
+    page.CanvasSize = UDim2.new(0, 0, 0, 0)
+    page.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    page.Visible = false
+    page.Parent = PageContainer
+    local list = Instance.new("UIListLayout")
+    list.Padding = UDim.new(0, 8)
+    list.Parent = page
+    local padding = Instance.new("UIPadding")
+    padding.PaddingRight = UDim.new(0, 7)
+    padding.PaddingBottom = UDim.new(0, 10)
+    padding.Parent = page
+    Pages[name] = page
+    return page
+end
+
+local CombatPage = CreatePage("Combat")
+local VisualsPage = CreatePage("Visuals")
+local WorldPage = CreatePage("World")
+local QuestPage = CreatePage("Quests")
+local ConfigPage = CreatePage("Configs")
+local IntelPage = CreatePage("Intel")
+
+local function SwitchPage(name)
+    local target = Pages[name]
+    if not target or target == CurrentPage then return end
+    local outgoing = CurrentPage
+    CurrentPage = target
+    if outgoing then
+        local outTween = Tween(outgoing, {Position = UDim2.fromOffset(-18, 0)}, 0.14)
+        outTween:Play()
+        outTween.Completed:Once(function()
+            outgoing.Visible = false
+            outgoing.Position = UDim2.fromOffset(0, 0)
+        end)
+    end
+    target.Position = UDim2.fromOffset(18, 0)
+    target.Visible = true
+    Tween(target, {Position = UDim2.fromOffset(0, 0)}, 0.2, Enum.EasingStyle.Quart):Play()
+end
+
+local activeTab
+local function CreateTab(label, pageName)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, 0, 0, 36)
+    button.BackgroundColor3 = Theme.Surface
+    button.BorderSizePixel = 0
+    button.AutoButtonColor = false
+    button.Text = label
+    button.TextColor3 = Theme.Muted
+    button.Font = Enum.Font.GothamMedium
+    button.TextSize = 12
+    button.TextXAlignment = Enum.TextXAlignment.Left
+    button.Parent = NavList
+    Round(button, 7)
+
+    local indicator = Instance.new("Frame")
+    indicator.Size = UDim2.new(0, 3, 0, 16)
+    indicator.Position = UDim2.new(0, 7, 0.5, -8)
+    indicator.BackgroundColor3 = Theme.AccentBright
+    indicator.BackgroundTransparency = 1
+    indicator.BorderSizePixel = 0
+    indicator.Parent = button
+    Round(indicator, 2)
+
+    local function selectTab()
+        if activeTab and activeTab ~= button then
+            local oldIndicator = activeTab:FindFirstChild("Indicator")
+            Tween(activeTab, {BackgroundColor3 = Theme.Surface, TextColor3 = Theme.Muted}, 0.16):Play()
+            if oldIndicator then Tween(oldIndicator, {BackgroundTransparency = 1}, 0.16):Play() end
+        end
+        activeTab = button
+        Tween(button, {BackgroundColor3 = Theme.SurfaceActive, TextColor3 = Theme.Text}, 0.16):Play()
+        Tween(indicator, {BackgroundTransparency = 0}, 0.16):Play()
+        SwitchPage(pageName)
+    end
+
+    button.MouseEnter:Connect(function()
+        if button ~= activeTab then Tween(button, {BackgroundColor3 = Theme.SurfaceHover, TextColor3 = Theme.Text}, 0.12):Play() end
+    end)
+    button.MouseLeave:Connect(function()
+        if button ~= activeTab then Tween(button, {BackgroundColor3 = Theme.Surface, TextColor3 = Theme.Muted}, 0.16):Play() end
+    end)
+    button.MouseButton1Click:Connect(selectTab)
+    indicator.Name = "Indicator"
+
+    if not activeTab then selectTab() end
+    return button
+end
+
+CreateTab("  Combat", "Combat")
+CreateTab("  Visuals", "Visuals")
+CreateTab("  World", "World")
+CreateTab("  Quests", "Quests")
+CreateTab("  Configs", "Configs")
+CreateTab("  Intel", "Intel")
+
+local function CreateCard(parent, height)
+    local card = Instance.new("Frame")
+    card.Size = UDim2.new(1, 0, 0, height)
+    card.BackgroundColor3 = Theme.Surface
+    card.BorderSizePixel = 0
+    card.Parent = parent
+    Round(card, 8)
+    local outline = Stroke(card, Theme.Border, 0.45, 1)
+    card.MouseEnter:Connect(function()
+        Tween(card, {BackgroundColor3 = Theme.SurfaceHover}, 0.14):Play()
+        Tween(outline, {Transparency = 0.18}, 0.14):Play()
+    end)
+    card.MouseLeave:Connect(function()
+        Tween(card, {BackgroundColor3 = Theme.Surface}, 0.16):Play()
+        Tween(outline, {Transparency = 0.45}, 0.16):Play()
+    end)
+    return card
+end
+
+local function AddSectionLabel(parent, text)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 0, 25)
+    label.BackgroundTransparency = 1
+    label.Text = text:upper()
+    label.TextColor3 = Theme.AccentBright
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 10
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = parent
+end
+
+local function AddToggle(parent, text, default, callback)
+    local card = CreateCard(parent, 46)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -86, 1, 0)
+    label.Position = UDim2.fromOffset(14, 0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Theme.Text
+    label.Font = Enum.Font.GothamMedium
+    label.TextSize = 12
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = card
+
+    local state = default == true
+    local toggle = Instance.new("TextButton")
+    toggle.Size = UDim2.fromOffset(38, 20)
+    toggle.Position = UDim2.new(1, -52, 0.5, -10)
+    toggle.BackgroundColor3 = state and Theme.Accent or Color3.fromRGB(55, 59, 69)
+    toggle.BorderSizePixel = 0
+    toggle.AutoButtonColor = false
+    toggle.Text = ""
+    toggle.Parent = card
+    Round(toggle, 10)
+
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.fromOffset(14, 14)
+    knob.Position = state and UDim2.new(1, -17, 0.5, -7) or UDim2.new(0, 3, 0.5, -7)
+    knob.BackgroundColor3 = Theme.Text
+    knob.BorderSizePixel = 0
+    knob.Parent = toggle
+    Round(knob, 7)
+
+    toggle.MouseButton1Click:Connect(function()
+        state = not state
+        Tween(toggle, {BackgroundColor3 = state and Theme.Accent or Color3.fromRGB(55, 59, 69)}, 0.14):Play()
+        Tween(knob, {Position = state and UDim2.new(1, -17, 0.5, -7) or UDim2.new(0, 3, 0.5, -7)}, 0.18, Enum.EasingStyle.Back):Play()
+        callback(state)
+    end)
+    return card
+end
+
+local function AddSlider(parent, text, minimum, maximum, default, callback)
+    local card = CreateCard(parent, 54)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -72, 0, 22)
+    label.Position = UDim2.fromOffset(14, 5)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Theme.Text
+    label.Font = Enum.Font.GothamMedium
+    label.TextSize = 12
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = card
+
+    local valueLabel = Instance.new("TextLabel")
+    valueLabel.Size = UDim2.fromOffset(56, 22)
+    valueLabel.Position = UDim2.new(1, -68, 0, 5)
+    valueLabel.BackgroundTransparency = 1
+    valueLabel.Text = tostring(default)
+    valueLabel.TextColor3 = Theme.AccentBright
+    valueLabel.Font = Enum.Font.GothamBold
+    valueLabel.TextSize = 11
+    valueLabel.TextXAlignment = Enum.TextXAlignment.Right
+    valueLabel.Parent = card
+
+    local track = Instance.new("TextButton")
+    track.Size = UDim2.new(1, -28, 0, 5)
+    track.Position = UDim2.fromOffset(14, 37)
+    track.BackgroundColor3 = Color3.fromRGB(54, 58, 68)
+    track.BorderSizePixel = 0
+    track.AutoButtonColor = false
+    track.Text = ""
+    track.Parent = card
+    Round(track, 3)
+
+    local fill = Instance.new("Frame")
+    fill.Size = UDim2.new((default - minimum) / (maximum - minimum), 0, 1, 0)
+    fill.BackgroundColor3 = Theme.Accent
+    fill.BorderSizePixel = 0
+    fill.Parent = track
+    Round(fill, 3)
+
+    local dragging = false
+    local function setFromInput(input)
+        local fraction = math.clamp((input.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
+        local value = math.floor(minimum + ((maximum - minimum) * fraction))
+        fill.Size = UDim2.new(fraction, 0, 1, 0)
+        valueLabel.Text = tostring(value)
+        callback(value)
+    end
+    track.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = true; setFromInput(input) end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then setFromInput(input) end
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+    end)
+    return card
+end
+
+local function AddButton(parent, text, callback)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, 0, 0, 40)
+    button.BackgroundColor3 = Theme.SurfaceActive
+    button.BorderSizePixel = 0
+    button.AutoButtonColor = false
+    button.Text = text
+    button.TextColor3 = Theme.Text
+    button.Font = Enum.Font.GothamMedium
+    button.TextSize = 12
+    button.Parent = parent
+    Round(button, 8)
+    local outline = Stroke(button, Theme.Border, 0.25, 1)
+    button.MouseEnter:Connect(function()
+        Tween(button, {BackgroundColor3 = Color3.fromRGB(52, 57, 68)}, 0.13):Play()
+        Tween(outline, {Color = Theme.Accent, Transparency = 0.05}, 0.13):Play()
+    end)
+    button.MouseLeave:Connect(function()
+        Tween(button, {BackgroundColor3 = Theme.SurfaceActive}, 0.16):Play()
+        Tween(outline, {Color = Theme.Border, Transparency = 0.25}, 0.16):Play()
+    end)
+    button.MouseButton1Click:Connect(callback)
+    return button
+end
+
+local function AddInfoLine(parent, text, color)
+    local card = CreateCard(parent, 34)
+    card.BackgroundColor3 = Color3.fromRGB(21, 23, 29)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -24, 1, 0)
+    label.Position = UDim2.fromOffset(12, 0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = color or Theme.Muted
+    label.Font = Enum.Font.Gotham
+    label.TextSize = 11
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = card
+    return card
+end
+
+local fpsFrames, fpsValue = 0, 0
+local FpsConnection = RunService.RenderStepped:Connect(function()
+    if ScriptAlive then fpsFrames += 1 end
+end)
+task.spawn(function()
+    while task.wait(1) do
+        fpsValue = fpsFrames
+        fpsFrames = 0
+        if string.sub(HeaderStatus.Text, 1, 5) == "READY" then
+            HeaderStatus.Text = "READY  •  " .. fpsValue .. " FPS"
+        end
+    end
+end)
+
+-- POPULATE TABS
+AddSectionLabel(CombatPage, "Aim assistance")
+AddToggle(CombatPage, "Enable aim assist", Config.Aimbot.Enabled, function(v) Config.Aimbot.Enabled = v end)
+AddToggle(CombatPage, "Show FOV radius", Config.Aimbot.ShowFOV, function(v) Config.Aimbot.ShowFOV = v end)
+AddToggle(CombatPage, "Include AI targets", Config.Aimbot.TargetBots, function(v) Config.Aimbot.TargetBots = v end)
+AddToggle(CombatPage, "Require line of sight", Config.Aimbot.WallCheck, function(v) Config.Aimbot.WallCheck = v end)
+AddSlider(CombatPage, "FOV radius", 50, 500, Config.Aimbot.FOV, function(v) Config.Aimbot.FOV = v end)
+AddSlider(CombatPage, "Aim smoothing", 5, 50, math.floor(Config.Aimbot.Smoothness * 100), function(v) Config.Aimbot.Smoothness = v / 100 end)
+
+AddSectionLabel(VisualsPage, "Overlay")
+AddToggle(VisualsPage, "Enable overlay", Config.ESP.Enabled, function(v) Config.ESP.Enabled = v end)
+AddSlider(VisualsPage, "Maximum distance", 200, 5000, Config.ESP.MaxDistance, function(v) Config.ESP.MaxDistance = v end)
+AddSectionLabel(VisualsPage, "Entity filters")
+AddToggle(VisualsPage, "Players", Config.ESP.Players, function(v) Config.ESP.Players = v end)
+AddToggle(VisualsPage, "AI bots", Config.ESP.Bots, function(v) Config.ESP.Bots = v end)
+AddToggle(VisualsPage, "Loot containers", Config.ESP.Containers, function(v) Config.ESP.Containers = v end)
+AddToggle(VisualsPage, "Lootable bodies", Config.ESP.DeadBodies, function(v) Config.ESP.DeadBodies = v end)
+AddToggle(VisualsPage, "Extraction zones", Config.ESP.Extractions, function(v) Config.ESP.Extractions = v end)
+AddToggle(VisualsPage, "Quest items", Config.ESP.QuestItems, function(v) Config.ESP.QuestItems = v end)
+AddToggle(VisualsPage, "Keys & locked access", Config.ESP.KeyLocations, function(v) Config.ESP.KeyLocations = v end)
+AddSectionLabel(VisualsPage, "Drawing")
+AddToggle(VisualsPage, "Boxes", Config.ESP.ShowBoxes, function(v) Config.ESP.ShowBoxes = v end)
+AddToggle(VisualsPage, "Health bars", Config.ESP.ShowHealth, function(v) Config.ESP.ShowHealth = v end)
+AddToggle(VisualsPage, "Skeleton", Config.ESP.ShowSkeleton, function(v) Config.ESP.ShowSkeleton = v end)
+AddToggle(VisualsPage, "Head marker", Config.ESP.ShowHeadDot, function(v) Config.ESP.ShowHeadDot = v end)
+AddToggle(VisualsPage, "Weapon label", Config.ESP.ShowWeapon, function(v) Config.ESP.ShowWeapon = v end)
+AddToggle(VisualsPage, "Armor indicator", Config.ESP.ShowArmor, function(v) Config.ESP.ShowArmor = v end)
+
+AddSectionLabel(WorldPage, "Environment")
+AddToggle(WorldPage, "Extraction tracker HUD", Config.World.ExtractionTracker, function(v) Config.World.ExtractionTracker = v end)
+AddToggle(WorldPage, "Fullbright", Config.World.Fullbright, function(v)
+    Config.World.Fullbright = v
+    if v then
+        Lighting.Ambient = Color3.fromRGB(200, 200, 200)
+        Lighting.OutdoorAmbient = Color3.fromRGB(200, 200, 200)
+        Lighting.Brightness = 3
+        Lighting.FogEnd = 100000
+        Lighting.FogStart = 100000
+    else
+        pcall(function()
+            Lighting.Ambient = OriginalLighting.Ambient
+            Lighting.OutdoorAmbient = OriginalLighting.OutdoorAmbient
+            Lighting.Brightness = OriginalLighting.Brightness
+            Lighting.FogEnd = OriginalLighting.FogEnd
+            Lighting.FogStart = OriginalLighting.FogStart
+        end)
+    end
+end)
+
+local QuestList = Instance.new("Frame")
+QuestList.Size = UDim2.new(1, 0, 0, 0)
+QuestList.AutomaticSize = Enum.AutomaticSize.Y
+QuestList.BackgroundTransparency = 1
+QuestList.Parent = QuestPage
+local QuestLayout = Instance.new("UIListLayout")
+QuestLayout.Padding = UDim.new(0, 6)
+QuestLayout.Parent = QuestList
+local QuestRows = {}
+local PinnedQuest = nil
+
+local function ClearQuestRows()
+    for _, row in ipairs(QuestRows) do row:Destroy() end
+    QuestRows = {}
+end
+
+local function QuestSnapshot()
+    local lines, entries = {"SANDSTORM QUEST SNAPSHOT"}, {}
+    local folders = {Workspace:FindFirstChild("QuestItems"), ReplicatedStorage:FindFirstChild("QuestItems")}
+    for _, folder in ipairs(folders) do
+        if folder then
+            for _, item in ipairs(folder:GetChildren()) do
+                local part = item:IsA("BasePart") and item or item:FindFirstChildWhichIsA("BasePart", true)
+                local distance = 0
+                if part and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                    distance = math.floor((part.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)
+                end
+                table.insert(entries, {Name = item.Name, Distance = distance, Instance = item, Part = part})
+            end
+        end
+    end
+    table.sort(entries, function(a, b) return a.Distance < b.Distance end)
+    for _, entry in ipairs(entries) do table.insert(lines, string.format("%s — %dm", entry.Name, entry.Distance)) end
+    return lines, entries
+end
+
+local function RefreshQuestList()
+    ClearQuestRows()
+    local _, entries = QuestSnapshot()
+    if #entries == 0 then
+        table.insert(QuestRows, AddInfoLine(QuestList, "No quest items found in the known folders."))
+    else
+        for _, entry in ipairs(entries) do
+            table.insert(QuestRows, AddButton(QuestList, string.format("Pin  •  %s  •  %dm", entry.Name, entry.Distance), function()
+                PinnedQuest = {Name = entry.Name, Instance = entry.Instance}
+                SetStatus("PINNED  •  " .. entry.Name, true)
+            end))
+        end
+    end
+    SetStatus(string.format("QUEST SCAN  •  %d FOUND", #entries), true)
+end
+
+AddSectionLabel(QuestPage, "Quest helper")
+AddToggle(QuestPage, "Quest item overlay", Config.ESP.QuestItems, function(v) Config.ESP.QuestItems = v end)
+AddButton(QuestPage, "Refresh quest scan", RefreshQuestList)
+AddButton(QuestPage, "Clear pinned quest", function()
+    PinnedQuest = nil
+    SetStatus("PIN CLEARED", true)
+end)
+AddButton(QuestPage, "Copy quest snapshot", function()
+    local lines = QuestSnapshot()
+    if setclipboard then setclipboard(table.concat(lines, "\n")); SetStatus("QUEST SNAPSHOT COPIED", true) else SetStatus("CLIPBOARD NOT AVAILABLE", false) end
+end)
+AddSectionLabel(QuestPage, "Detected quest items")
+RefreshQuestList()
+
+local HttpService = game:GetService("HttpService")
+local ConfigPath = "sandstorm_premium_config.json"
+local function MakeConfigSnapshot()
+    return {
+        Aimbot = {
+            Enabled = Config.Aimbot.Enabled, FOV = Config.Aimbot.FOV, Smoothness = Config.Aimbot.Smoothness,
+            ShowFOV = Config.Aimbot.ShowFOV, TeamCheck = Config.Aimbot.TeamCheck, WallCheck = Config.Aimbot.WallCheck,
+            TargetBots = Config.Aimbot.TargetBots
+        },
+        ESP = {
+            Enabled = Config.ESP.Enabled, Players = Config.ESP.Players, Bots = Config.ESP.Bots, Containers = Config.ESP.Containers,
+            DeadBodies = Config.ESP.DeadBodies, Extractions = Config.ESP.Extractions, QuestItems = Config.ESP.QuestItems, KeyLocations = Config.ESP.KeyLocations,
+            MaxDistance = Config.ESP.MaxDistance, ShowBoxes = Config.ESP.ShowBoxes, ShowHealth = Config.ESP.ShowHealth,
+            ShowNames = Config.ESP.ShowNames, ShowSkeleton = Config.ESP.ShowSkeleton, ShowHeadDot = Config.ESP.ShowHeadDot,
+            ShowWeapon = Config.ESP.ShowWeapon, ShowArmor = Config.ESP.ShowArmor, ShowDistance = Config.ESP.ShowDistance
+        },
+        World = {Fullbright = Config.World.Fullbright, ExtractionTracker = Config.World.ExtractionTracker}
+    }
+end
+
+local function ApplyConfig(snapshot)
+    for groupName, groupValues in pairs(snapshot) do
+        if Config[groupName] and type(groupValues) == "table" then
+            for key, value in pairs(groupValues) do
+                if Config[groupName][key] ~= nil then Config[groupName][key] = value end
+            end
+        end
+    end
+end
+
+AddSectionLabel(ConfigPage, "Session configuration")
+AddInfoLine(ConfigPage, "Save/load uses sandstorm_premium_config.json when your executor supports local files.")
+local function ApplyProfile(name)
+    if name == "Loot" then
+        Config.Aimbot.Enabled = false
+        Config.ESP.Enabled = true
+        Config.ESP.Players = false
+        Config.ESP.Bots = false
+        Config.ESP.Containers = true
+        Config.ESP.DeadBodies = true
+        Config.ESP.QuestItems = true
+        Config.ESP.KeyLocations = true
+    elseif name == "Quest" then
+        Config.Aimbot.Enabled = false
+        Config.ESP.Enabled = true
+        Config.ESP.Players = false
+        Config.ESP.Bots = false
+        Config.ESP.Containers = false
+        Config.ESP.DeadBodies = false
+        Config.ESP.QuestItems = true
+        Config.ESP.KeyLocations = true
+    else
+        Config.Aimbot.Enabled = false
+        Config.ESP.Enabled = false
+        Config.ESP.QuestItems = false
+        Config.ESP.KeyLocations = false
+    end
+    SetStatus(string.upper(name) .. " PROFILE APPLIED", true)
+end
+AddSectionLabel(ConfigPage, "Quick profiles")
+AddButton(ConfigPage, "Loot profile", function() ApplyProfile("Loot") end)
+AddButton(ConfigPage, "Quest profile", function() ApplyProfile("Quest") end)
+AddButton(ConfigPage, "Minimal profile", function() ApplyProfile("Minimal") end)
+AddButton(ConfigPage, "Save configuration", function()
+    local ok, data = pcall(function() return HttpService:JSONEncode(MakeConfigSnapshot()) end)
+    if not ok then SetStatus("CONFIG SERIALIZE FAILED", false); return end
+    if writefile then writefile(ConfigPath, data); SetStatus("CONFIG SAVED", true)
+    elseif setclipboard then setclipboard(data); SetStatus("CONFIG COPIED", true)
+    else SetStatus("FILE API NOT AVAILABLE", false) end
+end)
+AddButton(ConfigPage, "Load configuration", function()
+    if not (isfile and readfile and isfile(ConfigPath)) then SetStatus("NO LOCAL CONFIG FOUND", false); return end
+    local ok, decoded = pcall(function() return HttpService:JSONDecode(readfile(ConfigPath)) end)
+    if ok then ApplyConfig(decoded); SetStatus("CONFIG LOADED  •  REOPEN MENU", true) else SetStatus("CONFIG LOAD FAILED", false) end
+end)
+AddButton(ConfigPage, "Copy configuration", function()
+    local ok, data = pcall(function() return HttpService:JSONEncode(MakeConfigSnapshot()) end)
+    if ok and setclipboard then setclipboard(data); SetStatus("CONFIG COPIED", true) else SetStatus("CLIPBOARD NOT AVAILABLE", false) end
+end)
+
+local function BuildWorkspaceIndex()
+    local lines = {"SANDSTORM WORLD SNAPSHOT", "PlaceId: " .. tostring(game.PlaceId), ""}
+    for _, item in ipairs(Workspace:GetChildren()) do
+        if not item:IsA("Terrain") then table.insert(lines, string.format("%s [%s] — %d children", item.Name, item.ClassName, #item:GetChildren())) end
+    end
+    return table.concat(lines, "\n")
+end
+
+AddSectionLabel(ConfigPage, "Data tools")
+AddInfoLine(ConfigPage, "Exports a readable index of Workspace objects; it does not alter the game.")
+AddButton(ConfigPage, "Copy world snapshot", function()
+    if setclipboard then setclipboard(BuildWorkspaceIndex()); SetStatus("WORLD SNAPSHOT COPIED", true) else SetStatus("CLIPBOARD NOT AVAILABLE", false) end
+end)
+AddSectionLabel(ConfigPage, "Session")
+AddButton(ConfigPage, "Unload script", function()
+    if getgenv and getgenv().SandstormPremiumUnload then
+        getgenv().SandstormPremiumUnload()
+    else
+        SetStatus("UNLOAD NOT READY", false)
+    end
+end)
+
+AddSectionLabel(IntelPage, "Game intel")
+AddInfoLine(IntelPage, "Place ID  •  115872975504419", Theme.Text)
+AddInfoLine(IntelPage, "Known bots  •  Workspace.IngameBots")
+AddInfoLine(IntelPage, "Known loot  •  Workspace.Containers")
+AddInfoLine(IntelPage, "Known extraction zones  •  Workspace.Extractions")
+AddInfoLine(IntelPage, "Known quest items  •  ReplicatedStorage.QuestItems")
+AddSectionLabel(IntelPage, "Controls")
+AddInfoLine(IntelPage, "INSERT / DELETE / RIGHT CTRL  •  toggle menu")
+AddInfoLine(IntelPage, "RIGHT MOUSE  •  aim assist lock")
+
+-- UI TOGGLE (INSERT / DELETE / RIGHT CTRL)
+-- ══════════════════════════════════════════════════════════════
+local isTweening = false
+local function ToggleUI()
+    if isTweening then return end
+    isTweening = true
+    Config.UIVisible = not Config.UIVisible
+    if Config.UIVisible then
+        MainFrame.Visible = true
+        WindowScale.Scale = 0.94
+        MainFrame.Position = UDim2.new(0.5, -395, 0.5, -246)
+        local scaleTween = Tween(WindowScale, {Scale = 1}, 0.24, Enum.EasingStyle.Back)
+        Tween(MainFrame, {Position = UDim2.new(0.5, -395, 0.5, -260)}, 0.22, Enum.EasingStyle.Quart):Play()
+        scaleTween:Play()
+        scaleTween.Completed:Once(function() isTweening = false end)
+    else
+        local scaleTween = Tween(WindowScale, {Scale = 0.94}, 0.16, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
+        Tween(MainFrame, {Position = UDim2.new(0.5, -395, 0.5, -246)}, 0.16, Enum.EasingStyle.Quart, Enum.EasingDirection.In):Play()
+        scaleTween:Play()
+        scaleTween.Completed:Once(function()
+            MainFrame.Visible = false
+            WindowScale.Scale = 1
+            MainFrame.Position = UDim2.new(0.5, -395, 0.5, -260)
+            isTweening = false
+        end)
+    end
+end
+local ToggleInputConnection = UserInputService.InputBegan:Connect(function(input, processed)
+    if processed then return end
+    if input.KeyCode == Enum.KeyCode.Delete or input.KeyCode == Enum.KeyCode.Insert or input.KeyCode == Enum.KeyCode.RightControl then
+        ToggleUI()
+    end
+end)
+
+-- FOV CIRCLE
+-- ══════════════════════════════════════════════════════════════
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Color = Color3.fromRGB(255, 45, 85)
+FOVCircle.Thickness = 1.5
+FOVCircle.NumSides = 40
+FOVCircle.Radius = Config.Aimbot.FOV
+FOVCircle.Filled = false
+FOVCircle.Transparency = 0.6
+
+-- ══════════════════════════════════════════════════════════════
+-- RAYCAST WALL CHECK
+-- ══════════════════════════════════════════════════════════════
+local function IsVisible(part, character)
+    if not part or not character then return false end
+    local origin = Camera.CFrame.Position
+    local direction = part.Position - origin
+    local params = RaycastParams.new()
+    params.FilterType = Enum.RaycastFilterType.Exclude
+    params.FilterDescendantsInstances = {LocalPlayer.Character, character, Camera}
+    params.IgnoreWater = true
+    local result = Workspace:Raycast(origin, direction, params)
+    return result == nil
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- R15 SKELETON BONES
+-- ══════════════════════════════════════════════════════════════
+local R15Bones = {
+    {"Head", "UpperTorso"},
+    {"UpperTorso", "LowerTorso"},
+    {"UpperTorso", "LeftUpperArm"},
+    {"LeftUpperArm", "LeftLowerArm"},
+    {"LeftLowerArm", "LeftHand"},
+    {"UpperTorso", "RightUpperArm"},
+    {"RightUpperArm", "RightLowerArm"},
+    {"RightLowerArm", "RightHand"},
+    {"LowerTorso", "LeftUpperLeg"},
+    {"LeftUpperLeg", "LeftLowerLeg"},
+    {"LeftLowerLeg", "LeftFoot"},
+    {"LowerTorso", "RightUpperLeg"},
+    {"RightUpperLeg", "RightLowerLeg"},
+    {"RightLowerLeg", "RightFoot"}
+}
+
+-- ══════════════════════════════════════════════════════════════
+-- ESP DRAWING CACHE
+-- ══════════════════════════════════════════════════════════════
+local ESPCache = {}
+local function GetESP(id)
+    if not ESPCache[id] then
+        local boxOut = Drawing.new("Square")
+        boxOut.Thickness = 3; boxOut.Color = Color3.fromRGB(0, 0, 0); boxOut.Filled = false; boxOut.Visible = false
+        local box = Drawing.new("Square")
+        box.Thickness = 1.5; box.Filled = false; box.Visible = false
+        local nameLabel = Drawing.new("Text")
+        nameLabel.Size = 13; nameLabel.Center = true; nameLabel.Outline = true; nameLabel.Font = 2; nameLabel.Visible = false
+        local hpBg = Drawing.new("Line")
+        hpBg.Thickness = 4; hpBg.Color = Color3.fromRGB(15, 15, 20); hpBg.Visible = false
+        local hpBar = Drawing.new("Line")
+        hpBar.Thickness = 2; hpBar.Visible = false
+        local hpText = Drawing.new("Text")
+        hpText.Size = 11; hpText.Center = true; hpText.Outline = true; hpText.Color = Color3.fromRGB(255, 255, 255); hpText.Visible = false
+        local headDot = Drawing.new("Circle")
+        headDot.Radius = 3; headDot.Filled = true; headDot.Visible = false
+        local weaponLabel = Drawing.new("Text")
+        weaponLabel.Size = 11; weaponLabel.Center = true; weaponLabel.Outline = true; weaponLabel.Color = Color3.fromRGB(255, 200, 80); weaponLabel.Visible = false
+        local armorLabel = Drawing.new("Text")
+        armorLabel.Size = 11; armorLabel.Center = true; armorLabel.Outline = true; armorLabel.Color = Color3.fromRGB(100, 180, 255); armorLabel.Visible = false
+        local lines = {}
+        for i = 1, 14 do
+            local line = Drawing.new("Line")
+            line.Thickness = 1.6; line.Visible = false
+            table.insert(lines, line)
+        end
+        ESPCache[id] = {
+            BoxOut = boxOut, Box = box, Name = nameLabel,
+            HPBg = hpBg, HP = hpBar, HPText = hpText,
+            HeadDot = headDot, WeaponLabel = weaponLabel, ArmorLabel = armorLabel,
+            Skeleton = lines
+        }
+    end
+    return ESPCache[id]
+end
+local function HideESP(id)
+    if ESPCache[id] then
+        local e = ESPCache[id]
+        e.BoxOut.Visible = false; e.Box.Visible = false; e.Name.Visible = false
+        e.HPBg.Visible = false; e.HP.Visible = false; e.HPText.Visible = false
+        e.HeadDot.Visible = false; e.WeaponLabel.Visible = false; e.ArmorLabel.Visible = false
+        for _, l in ipairs(e.Skeleton) do l.Visible = false end
+    end
+end
+
+local SimpleESPCache = {}
+local function GetSimpleESP(id)
+    if not SimpleESPCache[id] then
+        local label = Drawing.new("Text")
+        label.Size = 13; label.Center = true; label.Outline = true; label.Font = 2; label.Visible = false
+        SimpleESPCache[id] = {Label = label}
+    end
+    return SimpleESPCache[id]
+end
+local function HideSimpleESP(id)
+    if SimpleESPCache[id] then SimpleESPCache[id].Label.Visible = false end
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- ENTITY DETECTION HELPERS
+-- ══════════════════════════════════════════════════════════════
+local function IsPlayer(model)
+    return Players:GetPlayerFromCharacter(model) ~= nil
+end
+local function GetWeaponName(character)
+    for _, child in ipairs(character:GetChildren()) do
+        if child:IsA("Tool") then return child.Name end
+    end
+    return nil
+end
+local function HasArmor(character)
+    for _, desc in ipairs(character:GetDescendants()) do
+        if desc:IsA("BoolValue") and desc.Name == "BodyArmor" and desc.Value == true then
+            return true
+        end
+    end
+    return false
+end
+local function IsDeadBody(model)
+    return string.find(model.Name, "_Dead_") ~= nil
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- AIMBOT TARGET ACQUISITION
+-- ══════════════════════════════════════════════════════════════
+local function GetAimbotTarget()
+    local mousePos = UserInputService:GetMouseLocation()
+    local closest, minDist = nil, Config.Aimbot.FOV
+    local camPos = Camera.CFrame.Position
+    for _, plr in ipairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and plr.Character then
+            local hum = plr.Character:FindFirstChildOfClass("Humanoid")
+            local targetPart = plr.Character:FindFirstChild(Config.Aimbot.TargetPart) or plr.Character:FindFirstChild("Head")
+            if hum and targetPart and hum.Health > 0 then
+                local screenPos, onScreen = Camera:WorldToViewportPoint(targetPart.Position)
+                if onScreen then
+                    local dist = (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude
+                    if dist < minDist then
+                        if not Config.Aimbot.WallCheck or IsVisible(targetPart, plr.Character) then
+                            minDist = dist
+                            closest = targetPart
+                        end
+                    end
+                end
+            end
+        end
+    end
+    if Config.Aimbot.TargetBots then
+        local botFolder = Workspace:FindFirstChild("IngameBots")
+        if botFolder then
+            for _, bot in ipairs(botFolder:GetChildren()) do
+                if bot:IsA("Model") then
+                    local hum = bot:FindFirstChildOfClass("Humanoid")
+                    local targetPart = bot:FindFirstChild(Config.Aimbot.TargetPart) or bot:FindFirstChild("Head")
+                    if hum and targetPart and hum.Health > 0 then
+                        local screenPos, onScreen = Camera:WorldToViewportPoint(targetPart.Position)
+                        if onScreen then
+                            local dist = (Vector2.new(screenPos.X, screenPos.Y) - mousePos).Magnitude
+                            if dist < minDist then
+                                if not Config.Aimbot.WallCheck or IsVisible(targetPart, bot) then
+                                    minDist = dist
+                                    closest = targetPart
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return closest
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- EXTRACTION TRACKER HUD
+-- ══════════════════════════════════════════════════════════════
+local ExtractHUD = Instance.new("Frame")
+ExtractHUD.Size = UDim2.new(0, 260, 0, 0)
+ExtractHUD.Position = UDim2.new(1, -280, 0, 190)
+ExtractHUD.BackgroundColor3 = Color3.fromRGB(10, 11, 16)
+ExtractHUD.BackgroundTransparency = 0.15
+ExtractHUD.BorderSizePixel = 0
+ExtractHUD.Visible = false
+ExtractHUD.AutomaticSize = Enum.AutomaticSize.Y
+ExtractHUD.Parent = ScreenGui
+Instance.new("UICorner", ExtractHUD).CornerRadius = UDim.new(0, 8)
+local ExtHudStroke = Instance.new("UIStroke", ExtractHUD)
+ExtHudStroke.Color = Color3.fromRGB(50, 255, 120)
+ExtHudStroke.Thickness = 1
+ExtHudStroke.Transparency = 0.4
+local ExtHudLayout = Instance.new("UIListLayout", ExtractHUD)
+ExtHudLayout.Padding = UDim.new(0, 2)
+local ExtHudTitle = Instance.new("TextLabel")
+ExtHudTitle.Size = UDim2.new(1, 0, 0, 26)
+ExtHudTitle.BackgroundTransparency = 1
+ExtHudTitle.Text = "  EXTRACTION ZONES"
+ExtHudTitle.TextColor3 = Color3.fromRGB(50, 255, 120)
+ExtHudTitle.Font = Enum.Font.GothamBold
+ExtHudTitle.TextSize = 12
+ExtHudTitle.TextXAlignment = Enum.TextXAlignment.Left
+ExtHudTitle.Parent = ExtractHUD
+local ExtractLabels = {}
+local nextExtractionHudUpdate = 0
+local function UpdateExtractionHUD(camPos)
+    if os.clock() < nextExtractionHudUpdate then return end
+    nextExtractionHudUpdate = os.clock() + 0.25
+    local extractModel = Workspace:FindFirstChild("Extractions")
+    if not extractModel then return end
+
+    local sorted = {}
+    for _, zone in ipairs(extractModel:GetChildren()) do
+        if zone:IsA("BasePart") then
+            table.insert(sorted, {Name = zone.Name, Dist = (zone.Position - camPos).Magnitude})
+        end
+    end
+    table.sort(sorted, function(a, b) return a.Dist < b.Dist end)
+
+    for index, info in ipairs(sorted) do
+        local label = ExtractLabels[index]
+        if not label then
+            label = Instance.new("TextLabel")
+            label.Size = UDim2.new(1, -12, 0, 20)
+            label.BackgroundTransparency = 1
+            label.Font = Enum.Font.GothamMedium
+            label.TextSize = 11
+            label.TextXAlignment = Enum.TextXAlignment.Left
+            label.Parent = ExtractHUD
+            ExtractLabels[index] = label
+        end
+        label.Text = string.format("  %s  •  %dm", info.Name, math.floor(info.Dist))
+        label.TextColor3 = info.Dist < 200 and Color3.fromRGB(112, 196, 150) or Color3.fromRGB(184, 189, 202)
+        label.Visible = true
+    end
+    for index = #sorted + 1, #ExtractLabels do ExtractLabels[index].Visible = false end
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- QUEST HUD & CONTROLS
+-- ══════════════════════════════════════════════════════════════
+local QuestHUD = Instance.new("Frame")
+QuestHUD.Name = "QuestObjectiveHUD"
+QuestHUD.Size = UDim2.fromOffset(280, 112)
+QuestHUD.Position = UDim2.new(1, -300, 0, 58)
+QuestHUD.BackgroundColor3 = Color3.fromRGB(18, 20, 26)
+QuestHUD.BackgroundTransparency = 0.08
+QuestHUD.BorderSizePixel = 0
+QuestHUD.Active = true
+QuestHUD.Parent = ScreenGui
+Round(QuestHUD, 9)
+Stroke(QuestHUD, Theme.Border, 0.25, 1)
+
+local QuestHudTitle = Instance.new("TextLabel")
+QuestHudTitle.Size = UDim2.new(1, -26, 0, 24)
+QuestHudTitle.Position = UDim2.fromOffset(13, 8)
+QuestHudTitle.BackgroundTransparency = 1
+QuestHudTitle.Text = "QUEST OBJECTIVE"
+QuestHudTitle.TextColor3 = Theme.AccentBright
+QuestHudTitle.Font = Enum.Font.GothamBold
+QuestHudTitle.TextSize = 10
+QuestHudTitle.TextXAlignment = Enum.TextXAlignment.Left
+QuestHudTitle.Parent = QuestHUD
+
+local QuestHudObjective = Instance.new("TextLabel")
+QuestHudObjective.Size = UDim2.new(1, -26, 0, 22)
+QuestHudObjective.Position = UDim2.fromOffset(13, 31)
+QuestHudObjective.BackgroundTransparency = 1
+QuestHudObjective.Text = "Scanning for an active objective..."
+QuestHudObjective.TextColor3 = Theme.Text
+QuestHudObjective.Font = Enum.Font.GothamMedium
+QuestHudObjective.TextSize = 12
+QuestHudObjective.TextWrapped = true
+QuestHudObjective.TextXAlignment = Enum.TextXAlignment.Left
+QuestHudObjective.Parent = QuestHUD
+
+local QuestHudDescription = Instance.new("TextLabel")
+QuestHudDescription.Size = UDim2.new(1, -26, 0, 42)
+QuestHudDescription.Position = UDim2.fromOffset(13, 57)
+QuestHudDescription.BackgroundTransparency = 1
+QuestHudDescription.Text = "Open the Quests tab to refresh the detected items."
+QuestHudDescription.TextColor3 = Theme.Muted
+QuestHudDescription.Font = Enum.Font.Gotham
+QuestHudDescription.TextSize = 10
+QuestHudDescription.TextWrapped = true
+QuestHudDescription.TextXAlignment = Enum.TextXAlignment.Left
+QuestHudDescription.TextYAlignment = Enum.TextYAlignment.Top
+QuestHudDescription.Parent = QuestHUD
+
+local function MakeDraggable(handle, target)
+    local dragging, startInput, startPosition = false, nil, nil
+    handle.InputBegan:Connect(function(input)
+        if input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+        dragging, startInput, startPosition = true, input.Position, target.Position
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if not dragging or input.UserInputType ~= Enum.UserInputType.MouseMovement then return end
+        local delta = input.Position - startInput
+        target.Position = UDim2.new(startPosition.X.Scale, startPosition.X.Offset + delta.X, startPosition.Y.Scale, startPosition.Y.Offset + delta.Y)
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false end
+    end)
+end
+MakeDraggable(QuestHUD, QuestHUD)
+
+local function GetRelativeDirection(targetPosition)
+    if not targetPosition then return "unknown direction" end
+    local offset = targetPosition - Camera.CFrame.Position
+    local flatOffset = Vector3.new(offset.X, 0, offset.Z)
+    if flatOffset.Magnitude < 1 then return "at your position" end
+    local look = Vector3.new(Camera.CFrame.LookVector.X, 0, Camera.CFrame.LookVector.Z).Unit
+    local right = Vector3.new(Camera.CFrame.RightVector.X, 0, Camera.CFrame.RightVector.Z).Unit
+    local forward = look:Dot(flatOffset.Unit)
+    local sideways = right:Dot(flatOffset.Unit)
+    if forward > 0.55 then return "ahead" end
+    if forward < -0.55 then return "behind you" end
+    return sideways > 0 and "to your right" or "to your left"
+end
+
+local function UpdateQuestObjective()
+    local _, entries = QuestSnapshot()
+    local quest = entries[1]
+    if PinnedQuest then
+        for _, entry in ipairs(entries) do
+            if entry.Instance == PinnedQuest.Instance or entry.Name == PinnedQuest.Name then
+                quest = entry
+                break
+            end
+        end
+        if not quest or (quest.Instance ~= PinnedQuest.Instance and quest.Name ~= PinnedQuest.Name) then
+            PinnedQuest = nil
+            quest = entries[1]
+        end
+    end
+    if quest then
+        local pinned = PinnedQuest ~= nil
+        QuestHudTitle.Text = pinned and "PINNED QUEST" or "QUEST OBJECTIVE"
+        QuestHudObjective.Text = "Collect " .. quest.Name
+        QuestHudDescription.Text = string.format("%dm away  •  %s%s", quest.Distance, GetRelativeDirection(quest.Part and quest.Part.Position), pinned and "  •  pinned" or "")
+        return
+    end
+    local tasks = Workspace:FindFirstChild("TasksObjects")
+    if tasks and #tasks:GetChildren() > 0 then
+        QuestHudObjective.Text = "Investigate " .. tasks:GetChildren()[1].Name
+        QuestHudDescription.Text = "A task object is loaded in the world. Reach it and follow the in-game interaction prompt."
+        return
+    end
+    QuestHudTitle.Text = "QUEST OBJECTIVE"
+    QuestHudObjective.Text = "No active quest item detected"
+    QuestHudDescription.Text = "Quest items will appear here as soon as they load in Workspace or ReplicatedStorage."
+end
+
+task.spawn(function()
+    while ScriptAlive and QuestHUD.Parent do
+        UpdateQuestObjective()
+        task.wait(0.75)
+    end
+end)
+
+local KeyLocationCache = {}
+local nextKeyLocationScan = 0
+local function AccessLabel(name)
+    local lower = string.lower(name)
+    if string.find(lower, "tunnel") then return "Tunnel keycard" end
+    if string.find(lower, "power") then return "Power station keycard" end
+    if string.find(lower, "keycard") then return "Keycard access" end
+    return "Locked access"
+end
+
+local function UpdateKeyLocationCache()
+    if os.clock() < nextKeyLocationScan then return end
+    nextKeyLocationScan = os.clock() + 3
+    local roots = {Workspace:FindFirstChild("LockedRooms"), Workspace:FindFirstChild("LockedRoomsZones"), Workspace:FindFirstChild("TasksObjects"), Workspace:FindFirstChild("Containers")}
+    local found, seen = {}, {}
+    for _, root in ipairs(roots) do
+        if root then
+            for _, instance in ipairs(root:GetDescendants()) do
+                local lower = string.lower(instance.Name)
+                if string.find(lower, "keycard") or string.find(lower, "tunnel") or string.find(lower, "power") or string.find(lower, "locked") then
+                    local part = instance:IsA("BasePart") and instance or instance:FindFirstChildWhichIsA("BasePart", true)
+                    if part and not seen[part] then
+                        seen[part] = true
+                        table.insert(found, {Part = part, Label = AccessLabel(instance.Name)})
+                    end
+                end
+            end
+        end
+    end
+    KeyLocationCache = found
+end
+
+local activePlayerIDs = {}
+local activeBotIDs = {}
+local function GetCharacterScreenBounds(character)
+    local boxCFrame, boxSize = character:GetBoundingBox()
+    local half = boxSize * 0.5
+    local minX, minY = math.huge, math.huge
+    local maxX, maxY = -math.huge, -math.huge
+    local visibleCorners = 0
+
+    for x = -1, 1, 2 do
+        for y = -1, 1, 2 do
+            for z = -1, 1, 2 do
+                local worldPoint = boxCFrame:PointToWorldSpace(Vector3.new(half.X * x, half.Y * y, half.Z * z))
+                local screenPoint, visible = Camera:WorldToViewportPoint(worldPoint)
+                if visible then
+                    visibleCorners += 1
+                    minX = math.min(minX, screenPoint.X)
+                    minY = math.min(minY, screenPoint.Y)
+                    maxX = math.max(maxX, screenPoint.X)
+                    maxY = math.max(maxY, screenPoint.Y)
+                end
+            end
+        end
+    end
+
+    if visibleCorners == 0 then return nil end
+    return minX, minY, maxX, maxY
+end
+
+local function RenderCharacterESP(id, character, color, colorOccluded, isBot)
+    local hrp = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
+    local hum = character:FindFirstChildOfClass("Humanoid")
+    local head = character:FindFirstChild("Head")
+    if not hrp or not hum or hum.Health <= 0 then
+        HideESP(id)
+        return
+    end
+    local camPos = Camera.CFrame.Position
+    local dist = (hrp.Position - camPos).Magnitude
+    if dist > Config.ESP.MaxDistance then HideESP(id) return end
+    local screenPos, onScreen = Camera:WorldToViewportPoint(hrp.Position)
+    local topX, topY, bottomX, bottomY = GetCharacterScreenBounds(character)
+    if not onScreen or not topX then HideESP(id) return end
+    local esp = GetESP(id)
+    local visible = IsVisible(head or hrp, character)
+    local drawColor = visible and color or colorOccluded
+    local sizeX = math.max(2, bottomX - topX)
+    local sizeY = math.max(2, bottomY - topY)
+
+    if Config.ESP.ShowBoxes then
+        esp.BoxOut.Size = Vector2.new(sizeX + 2, sizeY + 2)
+        esp.BoxOut.Position = Vector2.new(topX - 1, topY - 1)
+        esp.BoxOut.Visible = true
+        esp.Box.Size = Vector2.new(sizeX, sizeY)
+        esp.Box.Position = Vector2.new(topX, topY)
+        esp.Box.Color = drawColor
+        esp.Box.Visible = true
+    else
+        esp.BoxOut.Visible = false
+        esp.Box.Visible = false
+    end
+
+    if Config.ESP.ShowNames then
+        local displayName = character.Name
+        if isBot then displayName = "[BOT] " .. displayName end
+        local armorStr = ""
+        if Config.ESP.ShowArmor and HasArmor(character) then armorStr = " [A]" end
+        esp.Name.Position = Vector2.new(screenPos.X, topY - 16)
+        esp.Name.Text = string.format("%s [%dm]%s", displayName, math.floor(dist), armorStr)
+        esp.Name.Color = drawColor
+        esp.Name.Visible = true
+    else
+        esp.Name.Visible = false
+    end
+
+    if Config.ESP.ShowHealth then
+        local pct = math.clamp(hum.Health / hum.MaxHealth, 0, 1)
+        local hpColor = Color3.fromRGB(255 * (1 - pct), 255 * pct, 0)
+        esp.HPBg.From = Vector2.new(topX - 6, topY + sizeY)
+        esp.HPBg.To = Vector2.new(topX - 6, topY)
+        esp.HPBg.Visible = true
+        esp.HP.From = Vector2.new(topX - 6, topY + sizeY)
+        esp.HP.To = Vector2.new(topX - 6, (topY + sizeY) - (sizeY * pct))
+        esp.HP.Color = hpColor
+        esp.HP.Visible = true
+        esp.HPText.Position = Vector2.new(topX - 20, (topY + sizeY) - (sizeY * pct) - 6)
+        esp.HPText.Text = tostring(math.floor(hum.Health))
+        esp.HPText.Visible = true
+    else
+        esp.HPBg.Visible = false
+        esp.HP.Visible = false
+        esp.HPText.Visible = false
+    end
+
+    if Config.ESP.ShowHeadDot and head then
+        local headPos, hVis = Camera:WorldToViewportPoint(head.Position)
+        if hVis then
+            esp.HeadDot.Position = Vector2.new(headPos.X, headPos.Y)
+            esp.HeadDot.Color = drawColor
+            esp.HeadDot.Visible = true
+        else esp.HeadDot.Visible = false end
+    else esp.HeadDot.Visible = false end
+
+    if Config.ESP.ShowWeapon then
+        local wepName = GetWeaponName(character)
+        if wepName then
+            esp.WeaponLabel.Position = Vector2.new(screenPos.X, topY + sizeY + 3)
+            esp.WeaponLabel.Text = wepName
+            esp.WeaponLabel.Visible = true
+        else esp.WeaponLabel.Visible = false end
+    else esp.WeaponLabel.Visible = false end
+    
+    esp.ArmorLabel.Visible = false
+
+    if Config.ESP.ShowSkeleton then
+        for idx, pair in ipairs(R15Bones) do
+            local pA, pB = character:FindFirstChild(pair[1]), character:FindFirstChild(pair[2])
+            local line = esp.Skeleton[idx]
+            if pA and pB and line then
+                local posA, visA = Camera:WorldToViewportPoint(pA.Position)
+                local posB, visB = Camera:WorldToViewportPoint(pB.Position)
+                if visA and visB then
+                    line.From = Vector2.new(posA.X, posA.Y)
+                    line.To = Vector2.new(posB.X, posB.Y)
+                    line.Color = drawColor
+                    line.Visible = true
+                else line.Visible = false end
+            elseif line then line.Visible = false end
+        end
+    else
+        for _, l in ipairs(esp.Skeleton) do l.Visible = false end
+    end
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- RENDER LOOP
+-- ══════════════════════════════════════════════════════════════
+local RenderConnection = RunService.RenderStepped:Connect(function()
+    if not ScriptAlive then return end
+    local mouseLoc = UserInputService:GetMouseLocation()
+    FOVCircle.Position = mouseLoc
+    FOVCircle.Radius = Config.Aimbot.FOV
+    FOVCircle.Visible = Config.Aimbot.Enabled and Config.Aimbot.ShowFOV
+    local camPos = Camera.CFrame.Position
+
+    if Config.Aimbot.Enabled and UserInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton2) then
+        local target = GetAimbotTarget()
+        if target then
+            local targetCF = CFrame.new(Camera.CFrame.Position, target.Position)
+            Camera.CFrame = Camera.CFrame:Lerp(targetCF, Config.Aimbot.Smoothness)
+        end
+    end
+
+    if not Config.ESP.Enabled then
+        for id in pairs(ESPCache) do HideESP(id) end
+        for id in pairs(SimpleESPCache) do HideSimpleESP(id) end
+        ExtractHUD.Visible = false
+        return
+    end
+
+    local currentPlayerIDs = {}
+    local currentBotIDs = {}
+    local currentSimpleIDs = {}
+
+    if Config.ESP.Players then
+        for _, plr in ipairs(Players:GetPlayers()) do
+            if plr ~= LocalPlayer and plr.Character then
+                local id = "P_" .. plr.Name
+                currentPlayerIDs[id] = true
+                RenderCharacterESP(id, plr.Character, Config.ESP.ColorPlayer, Config.ESP.ColorPlayerOccluded, false)
+            end
+        end
+    end
+    for id in pairs(activePlayerIDs) do
+        if not currentPlayerIDs[id] then HideESP(id) end
+    end
+    activePlayerIDs = currentPlayerIDs
+
+    if Config.ESP.Bots then
+        local botFolder = Workspace:FindFirstChild("IngameBots")
+        if botFolder then
+            for _, bot in ipairs(botFolder:GetChildren()) do
+                if bot:IsA("Model") then
+                    local id = "B_" .. bot.Name
+                    currentBotIDs[id] = true
+                    RenderCharacterESP(id, bot, Config.ESP.ColorBot, Config.ESP.ColorBot, true)
+                end
+            end
+        end
+    end
+    for id in pairs(activeBotIDs) do
+        if not currentBotIDs[id] then HideESP(id) end
+    end
+    activeBotIDs = currentBotIDs
+
+    if Config.ESP.Containers then
+        local containerFolder = Workspace:FindFirstChild("Containers")
+        if containerFolder then
+            for _, container in ipairs(containerFolder:GetChildren()) do
+                if container:IsA("Model") and not IsDeadBody(container) then
+                    local prompt = container:FindFirstChildOfClass("ProximityPrompt", true)
+                    if prompt then
+                        local part = container.PrimaryPart or container:FindFirstChildOfClass("BasePart")
+                        if part then
+                            local id = "C_" .. container.Name .. tostring(container:GetDebugId())
+                            currentSimpleIDs[id] = true
+                            local dist = (part.Position - camPos).Magnitude
+                            if dist <= Config.ESP.MaxDistance then
+                                local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+                                if onScreen then
+                                    local esp = GetSimpleESP(id)
+                                    esp.Label.Position = Vector2.new(screenPos.X, screenPos.Y)
+                                    esp.Label.Text = string.format("[%s] %dm", container.Name, math.floor(dist))
+                                    esp.Label.Color = Config.ESP.ColorContainer
+                                    esp.Label.Visible = true
+                                else HideSimpleESP(id) end
+                            else HideSimpleESP(id) end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if Config.ESP.DeadBodies then
+        local containerFolder = Workspace:FindFirstChild("Containers")
+        if containerFolder then
+            for _, body in ipairs(containerFolder:GetChildren()) do
+                if body:IsA("Model") and IsDeadBody(body) then
+                    local part = body:FindFirstChild("HumanoidRootPart") or body:FindFirstChildOfClass("BasePart")
+                    if part then
+                        local id = "D_" .. tostring(body:GetDebugId())
+                        currentSimpleIDs[id] = true
+                        local dist = (part.Position - camPos).Magnitude
+                        if dist <= Config.ESP.MaxDistance then
+                            local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+                            if onScreen then
+                                local esp = GetSimpleESP(id)
+                                local deadName = string.match(body.Name, "(.+)_Dead_") or body.Name
+                                esp.Label.Position = Vector2.new(screenPos.X, screenPos.Y)
+                                esp.Label.Text = string.format("[BODY] %s %dm", deadName, math.floor(dist))
+                                esp.Label.Color = Config.ESP.ColorDeadBody
+                                esp.Label.Visible = true
+                            else HideSimpleESP(id) end
+                        else HideSimpleESP(id) end
+                    end
+                end
+            end
+        end
+    end
+
+    if Config.ESP.Extractions then
+        local extractModel = Workspace:FindFirstChild("Extractions")
+        if extractModel then
+            for _, zone in ipairs(extractModel:GetChildren()) do
+                if zone:IsA("BasePart") then
+                    local id = "E_" .. zone.Name
+                    currentSimpleIDs[id] = true
+                    local dist = (zone.Position - camPos).Magnitude
+                    if dist <= Config.ESP.MaxDistance + 2000 then
+                        local screenPos, onScreen = Camera:WorldToViewportPoint(zone.Position)
+                        if onScreen then
+                            local esp = GetSimpleESP(id)
+                            esp.Label.Position = Vector2.new(screenPos.X, screenPos.Y)
+                            esp.Label.Text = string.format("[EXTRACT] %s %dm", zone.Name, math.floor(dist))
+                            esp.Label.Color = Config.ESP.ColorExtraction
+                            esp.Label.Visible = true
+                        else HideSimpleESP(id) end
+                    else HideSimpleESP(id) end
+                end
+            end
+        end
+    end
+
+    if Config.ESP.QuestItems then
+        local questFolder = ReplicatedStorage:FindFirstChild("QuestItems")
+        if questFolder then
+            for _, item in ipairs(questFolder:GetChildren()) do
+                local part = item:FindFirstChildOfClass("MeshPart") or item:FindFirstChildOfClass("BasePart")
+                if part and part.Parent and part.Parent.Parent then
+                    local isPinnedQuest = PinnedQuest and (PinnedQuest.Instance == item or PinnedQuest.Name == item.Name)
+                    local id = "Q_" .. item.Name
+                    currentSimpleIDs[id] = true
+                    local dist = (part.Position - camPos).Magnitude
+                    if dist <= Config.ESP.MaxDistance then
+                        loadScreenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+                        if onScreen then
+                            local esp = GetSimpleESP(id)
+                            esp.Label.Position = Vector2.new(loadScreenPos.X, loadScreenPos.Y)
+                            esp.Label.Text = string.format(isPinnedQuest and "[PINNED] %s %dm" or "[QUEST] %s %dm", item.Name, math.floor(dist))
+                            esp.Label.Color = isPinnedQuest and Theme.AccentBright or Config.ESP.ColorQuestItem
+                            esp.Label.Visible = true
+                        else HideSimpleESP(id) end
+                    else HideSimpleESP(id) end
+                end
+            end
+        end
+    end
+
+    if Config.ESP.KeyLocations then
+        UpdateKeyLocationCache()
+        for _, marker in ipairs(KeyLocationCache) do
+            local part = marker.Part
+            if part and part.Parent then
+                local id = "K_" .. tostring(part:GetDebugId())
+                currentSimpleIDs[id] = true
+                local dist = (part.Position - camPos).Magnitude
+                if dist <= Config.ESP.MaxDistance then
+                    local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+                    if onScreen then
+                        local esp = GetSimpleESP(id)
+                        esp.Label.Position = Vector2.new(screenPos.X, screenPos.Y)
+                        esp.Label.Text = string.format("[ACCESS] %s  %dm", marker.Label, math.floor(dist))
+                        esp.Label.Color = Config.ESP.ColorKeyLocation
+                        esp.Label.Visible = true
+                    else HideSimpleESP(id) end
+                else HideSimpleESP(id) end
+            end
+        end
+    end
+
+    for id in pairs(SimpleESPCache) do
+        if not currentSimpleIDs[id] then HideSimpleESP(id) end
+    end
+
+    ExtractHUD.Visible = Config.World.ExtractionTracker
+    if Config.World.ExtractionTracker then
+        UpdateExtractionHUD(camPos)
+    end
+end)
+
+-- ══════════════════════════════════════════════════════════════
+-- CLEANUP
+-- ══════════════════════════════════════════════════════════════
+local function Cleanup()
+    if not ScriptAlive then return end
+    ScriptAlive = false
+    Config.ESP.Enabled = false
+    if FpsConnection then FpsConnection:Disconnect() end
+    if ToggleInputConnection then ToggleInputConnection:Disconnect() end
+    if RenderConnection then RenderConnection:Disconnect() end
+    pcall(function() FOVCircle:Remove() end)
+    for _, e in pairs(ESPCache) do
+        pcall(function() e.BoxOut:Remove(); e.Box:Remove(); e.Name:Remove() end)
+        pcall(function() e.HPBg:Remove(); e.HP:Remove(); e.HPText:Remove() end)
+        pcall(function() e.HeadDot:Remove(); e.WeaponLabel:Remove(); e.ArmorLabel:Remove() end)
+        for _, l in ipairs(e.Skeleton) do pcall(function() l:Remove() end) end
+    end
+    for _, e in pairs(SimpleESPCache) do pcall(function() e.Label:Remove() end) end
+    pcall(function() ScreenGui:Destroy() end)
+end
+if getgenv then getgenv().SandstormPremiumUnload = Cleanup end
+game:GetService("Players").LocalPlayer.CharacterRemoving:Connect(function()
+    if not ScriptAlive then return end
+    for id in pairs(ESPCache) do HideESP(id) end
+    for id in pairs(SimpleESPCache) do HideSimpleESP(id) end
+end)
+
+print("[+] Sandstorm Private Suite v1.0 Loaded — DesertStorm [EXTRACTION]")
+print("[+] Toggle UI: INSERT / DELETE | Aimbot: Hold Right-Click")
