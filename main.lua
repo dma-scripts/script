@@ -1,13 +1,9 @@
 --[[
     ================================================================
-    DESERTSTORM [EXTRACTION] — SANDSTORM PRIVATE SUITE v1.0 (FIXED)
+    DESERTSTORM [EXTRACTION] — dma.wtf FREE v2.1
     ================================================================
     PlaceId: 115872975504419
-    Fixes applied:
-    - Restored missing `Config.World.ExtractionTracker` state.
-    - Added missing Extraction Tracker UI Toggle in World tab.
-    - Purged trailing illegal syntax string breaking parsers.
-    - Ensured safe nil checks on Character & RootPart indexing.
+    Rebranded + notification toasts + RIGHT CTRL toggle
     ================================================================
 ]]
 local CoreGui = game:GetService("CoreGui")
@@ -88,7 +84,7 @@ end)
 -- SCREEN GUI + GRAPHITE UI
 -- ══════════════════════════════════════════════════════════════
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Sandstorm_Premium"
+ScreenGui.Name = "dma_wtf_free"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 if syn and syn.protect_gui then
@@ -137,6 +133,102 @@ local function Tween(object, properties, duration, style, direction)
     )
 end
 
+-- ══════════════════════════════════════════════════════════════
+-- NOTIFICATION SYSTEM (bottom-right toasts)
+-- ══════════════════════════════════════════════════════════════
+local NotifContainer = Instance.new("Frame")
+NotifContainer.Name = "NotifContainer"
+NotifContainer.Size = UDim2.new(0, 300, 1, -20)
+NotifContainer.Position = UDim2.new(1, -310, 0, 10)
+NotifContainer.BackgroundTransparency = 1
+NotifContainer.Parent = ScreenGui
+
+local NotifLayout = Instance.new("UIListLayout")
+NotifLayout.Padding = UDim.new(0, 6)
+NotifLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+NotifLayout.SortOrder = Enum.SortOrder.LayoutOrder
+NotifLayout.Parent = NotifContainer
+
+local notifOrder = 0
+local function Notify(title, message, duration, accentColor)
+    notifOrder = notifOrder + 1
+    duration = duration or 2.8
+    accentColor = accentColor or Theme.Accent
+
+    local card = Instance.new("Frame")
+    card.Name = "Notif_" .. notifOrder
+    card.Size = UDim2.new(1, 0, 0, 0)
+    card.AutomaticSize = Enum.AutomaticSize.Y
+    card.BackgroundColor3 = Color3.fromRGB(18, 20, 26)
+    card.BackgroundTransparency = 0.06
+    card.BorderSizePixel = 0
+    card.ClipsDescendants = true
+    card.LayoutOrder = notifOrder
+    card.Parent = NotifContainer
+    Round(card, 8)
+
+    local accentLine = Instance.new("Frame")
+    accentLine.Size = UDim2.new(0, 3, 1, -8)
+    accentLine.Position = UDim2.new(0, 6, 0, 4)
+    accentLine.BackgroundColor3 = accentColor
+    accentLine.BorderSizePixel = 0
+    accentLine.Parent = card
+    Round(accentLine, 2)
+
+    local cardStroke = Stroke(card, Theme.Border, 0.35, 1)
+
+    local padding = Instance.new("UIPadding")
+    padding.PaddingTop = UDim.new(0, 10)
+    padding.PaddingBottom = UDim.new(0, 10)
+    padding.PaddingLeft = UDim.new(0, 16)
+    padding.PaddingRight = UDim.new(0, 12)
+    padding.Parent = card
+
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(1, 0, 0, 16)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Text = title:upper()
+    titleLabel.TextColor3 = accentColor
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.TextSize = 10
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.Parent = card
+
+    local msgLabel = Instance.new("TextLabel")
+    msgLabel.Size = UDim2.new(1, 0, 0, 0)
+    msgLabel.AutomaticSize = Enum.AutomaticSize.Y
+    msgLabel.Position = UDim2.fromOffset(0, 18)
+    msgLabel.BackgroundTransparency = 1
+    msgLabel.Text = message
+    msgLabel.TextColor3 = Theme.Text
+    msgLabel.Font = Enum.Font.GothamMedium
+    msgLabel.TextSize = 11
+    msgLabel.TextWrapped = true
+    msgLabel.TextXAlignment = Enum.TextXAlignment.Left
+    msgLabel.Parent = card
+
+    -- slide in from right
+    card.Position = UDim2.new(1, 0, 0, 0)
+    Tween(card, {Position = UDim2.new(0, 0, 0, 0)}, 0.28, Enum.EasingStyle.Quart):Play()
+
+    task.delay(duration, function()
+        local fadeOut = Tween(card, {BackgroundTransparency = 1, Position = UDim2.new(1, 0, 0, 0)}, 0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
+        Tween(titleLabel, {TextTransparency = 1}, 0.25):Play()
+        Tween(msgLabel, {TextTransparency = 1}, 0.25):Play()
+        Tween(accentLine, {BackgroundTransparency = 1}, 0.25):Play()
+        Tween(cardStroke, {Transparency = 1}, 0.25):Play()
+        fadeOut:Play()
+        fadeOut.Completed:Once(function()
+            card:Destroy()
+        end)
+    end)
+
+    return card
+end
+
+-- ══════════════════════════════════════════════════════════════
+-- MAIN FRAME
+-- ══════════════════════════════════════════════════════════════
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
 MainFrame.Size = UDim2.fromOffset(790, 520)
@@ -154,8 +246,25 @@ WindowScale.Name = "WindowScale"
 WindowScale.Scale = 1
 WindowScale.Parent = MainFrame
 
+-- accent gradient bar at top
+local AccentBar = Instance.new("Frame")
+AccentBar.Size = UDim2.new(1, 0, 0, 2)
+AccentBar.Position = UDim2.fromOffset(0, 0)
+AccentBar.BorderSizePixel = 0
+AccentBar.BackgroundColor3 = Color3.fromRGB(112, 196, 150)
+AccentBar.Parent = MainFrame
+AccentBar.ZIndex = 5
+local AccentGrad = Instance.new("UIGradient")
+AccentGrad.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(112, 196, 150)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(151, 163, 184)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(80, 140, 220))
+})
+AccentGrad.Parent = AccentBar
+
 local Header = Instance.new("Frame")
 Header.Size = UDim2.new(1, 0, 0, 54)
+Header.Position = UDim2.fromOffset(0, 2)
 Header.BackgroundColor3 = Theme.Surface
 Header.BorderSizePixel = 0
 Header.Parent = MainFrame
@@ -167,12 +276,52 @@ HeaderLine.BackgroundColor3 = Theme.Border
 HeaderLine.BorderSizePixel = 0
 HeaderLine.Parent = Header
 
+-- draggable header
+local draggingUI, dragStart, startPos = false, nil, nil
+Header.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        draggingUI = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+    end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if draggingUI and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then draggingUI = false end
+end)
+
+-- close button
+local CloseBtn = Instance.new("TextButton")
+CloseBtn.Size = UDim2.fromOffset(30, 30)
+CloseBtn.Position = UDim2.new(1, -40, 0, 12)
+CloseBtn.BackgroundColor3 = Color3.fromRGB(55, 59, 69)
+CloseBtn.BackgroundTransparency = 0.5
+CloseBtn.BorderSizePixel = 0
+CloseBtn.AutoButtonColor = false
+CloseBtn.Text = "×"
+CloseBtn.TextColor3 = Theme.Muted
+CloseBtn.Font = Enum.Font.GothamBold
+CloseBtn.TextSize = 18
+CloseBtn.Parent = Header
+Round(CloseBtn, 6)
+CloseBtn.MouseEnter:Connect(function()
+    Tween(CloseBtn, {BackgroundTransparency = 0, BackgroundColor3 = Color3.fromRGB(200, 60, 60), TextColor3 = Theme.Text}, 0.14):Play()
+end)
+CloseBtn.MouseLeave:Connect(function()
+    Tween(CloseBtn, {BackgroundTransparency = 0.5, BackgroundColor3 = Color3.fromRGB(55, 59, 69), TextColor3 = Theme.Muted}, 0.16):Play()
+end)
+
 local Brand = Instance.new("TextLabel")
-Brand.Size = UDim2.fromOffset(230, 28)
+Brand.Size = UDim2.fromOffset(280, 28)
 Brand.Position = UDim2.fromOffset(20, 9)
 Brand.BackgroundTransparency = 1
 Brand.RichText = true
-Brand.Text = "SANDSTORM <font color=\"#d0d5e0\">PREMIUM</font>"
+Brand.Text = "dma.wtf <font color=\"#70c496\">FREE</font>"
 Brand.TextColor3 = Theme.Text
 Brand.Font = Enum.Font.GothamBold
 Brand.TextSize = 16
@@ -183,7 +332,7 @@ local SubBrand = Instance.new("TextLabel")
 SubBrand.Size = UDim2.fromOffset(320, 16)
 SubBrand.Position = UDim2.fromOffset(20, 32)
 SubBrand.BackgroundTransparency = 1
-SubBrand.Text = "Extraction toolkit  •  INSERT / DELETE to toggle"
+SubBrand.Text = "Extraction toolkit  •  INSERT / DELETE / RIGHT CTRL to toggle"
 SubBrand.TextColor3 = Theme.Muted
 SubBrand.Font = Enum.Font.Gotham
 SubBrand.TextSize = 10
@@ -207,8 +356,8 @@ local function SetStatus(text, good)
 end
 
 local Sidebar = Instance.new("Frame")
-Sidebar.Size = UDim2.new(0, 174, 1, -54)
-Sidebar.Position = UDim2.fromOffset(0, 54)
+Sidebar.Size = UDim2.new(0, 174, 1, -56)
+Sidebar.Position = UDim2.fromOffset(0, 56)
 Sidebar.BackgroundColor3 = Color3.fromRGB(20, 22, 27)
 Sidebar.BorderSizePixel = 0
 Sidebar.Parent = MainFrame
@@ -221,9 +370,22 @@ SidebarLine.BackgroundTransparency = 0.3
 SidebarLine.BorderSizePixel = 0
 SidebarLine.Parent = Sidebar
 
+-- player identity
+local PlayerLabel = Instance.new("TextLabel")
+PlayerLabel.Size = UDim2.new(1, -28, 0, 16)
+PlayerLabel.Position = UDim2.fromOffset(14, 12)
+PlayerLabel.BackgroundTransparency = 1
+PlayerLabel.RichText = true
+PlayerLabel.Text = string.format('<font color="#70c496">●</font> %s', LocalPlayer.DisplayName)
+PlayerLabel.TextColor3 = Theme.Text
+PlayerLabel.Font = Enum.Font.GothamMedium
+PlayerLabel.TextSize = 11
+PlayerLabel.TextXAlignment = Enum.TextXAlignment.Left
+PlayerLabel.Parent = Sidebar
+
 local NavLabel = Instance.new("TextLabel")
 NavLabel.Size = UDim2.new(1, -28, 0, 18)
-NavLabel.Position = UDim2.fromOffset(14, 16)
+NavLabel.Position = UDim2.fromOffset(14, 34)
 NavLabel.BackgroundTransparency = 1
 NavLabel.Text = "NAVIGATION"
 NavLabel.TextColor3 = Theme.Muted
@@ -234,18 +396,20 @@ NavLabel.Parent = Sidebar
 
 local NavList = Instance.new("Frame")
 NavList.Size = UDim2.new(1, -24, 0, 258)
-NavList.Position = UDim2.fromOffset(12, 42)
+NavList.Position = UDim2.fromOffset(12, 58)
 NavList.BackgroundTransparency = 1
 NavList.Parent = Sidebar
 local NavLayout = Instance.new("UIListLayout")
 NavLayout.Padding = UDim.new(0, 6)
 NavLayout.Parent = NavList
 
+-- session timer in footer
+local sessionStart = os.clock()
 local Footer = Instance.new("TextLabel")
 Footer.Size = UDim2.new(1, -28, 0, 34)
 Footer.Position = UDim2.new(0, 14, 1, -48)
 Footer.BackgroundTransparency = 1
-Footer.Text = "v2.0  •  LOCAL SESSION"
+Footer.Text = "dma.wtf free v2.1  •  LOCAL SESSION"
 Footer.TextColor3 = Theme.Muted
 Footer.Font = Enum.Font.Gotham
 Footer.TextSize = 9
@@ -434,6 +598,13 @@ local function AddToggle(parent, text, default, callback)
         Tween(toggle, {BackgroundColor3 = state and Theme.Accent or Color3.fromRGB(55, 59, 69)}, 0.14):Play()
         Tween(knob, {Position = state and UDim2.new(1, -17, 0.5, -7) or UDim2.new(0, 3, 0.5, -7)}, 0.18, Enum.EasingStyle.Back):Play()
         callback(state)
+        -- notification toast
+        Notify(
+            text,
+            state and "Enabled" or "Disabled",
+            2,
+            state and Theme.Good or Color3.fromRGB(218, 128, 128)
+        )
     end)
     return card
 end
@@ -603,6 +774,7 @@ AddToggle(WorldPage, "Fullbright", Config.World.Fullbright, function(v)
     end
 end)
 
+
 local QuestList = Instance.new("Frame")
 QuestList.Size = UDim2.new(1, 0, 0, 0)
 QuestList.AutomaticSize = Enum.AutomaticSize.Y
@@ -620,7 +792,7 @@ local function ClearQuestRows()
 end
 
 local function QuestSnapshot()
-    local lines, entries = {"SANDSTORM QUEST SNAPSHOT"}, {}
+    local lines, entries = {"dma.wtf QUEST SNAPSHOT"}, {}
     local folders = {Workspace:FindFirstChild("QuestItems"), ReplicatedStorage:FindFirstChild("QuestItems")}
     for _, folder in ipairs(folders) do
         if folder then
@@ -649,6 +821,7 @@ local function RefreshQuestList()
             table.insert(QuestRows, AddButton(QuestList, string.format("Pin  •  %s  •  %dm", entry.Name, entry.Distance), function()
                 PinnedQuest = {Name = entry.Name, Instance = entry.Instance}
                 SetStatus("PINNED  •  " .. entry.Name, true)
+                Notify("Quest", "Pinned: " .. entry.Name, 2.5, Theme.Good)
             end))
         end
     end
@@ -661,6 +834,7 @@ AddButton(QuestPage, "Refresh quest scan", RefreshQuestList)
 AddButton(QuestPage, "Clear pinned quest", function()
     PinnedQuest = nil
     SetStatus("PIN CLEARED", true)
+    Notify("Quest", "Pin cleared", 2, Theme.Muted)
 end)
 AddButton(QuestPage, "Copy quest snapshot", function()
     local lines = QuestSnapshot()
@@ -670,7 +844,7 @@ AddSectionLabel(QuestPage, "Detected quest items")
 RefreshQuestList()
 
 local HttpService = game:GetService("HttpService")
-local ConfigPath = "sandstorm_premium_config.json"
+local ConfigPath = "dma_wtf_extraction_config.json"
 local function MakeConfigSnapshot()
     return {
         Aimbot = {
@@ -700,7 +874,7 @@ local function ApplyConfig(snapshot)
 end
 
 AddSectionLabel(ConfigPage, "Session configuration")
-AddInfoLine(ConfigPage, "Save/load uses sandstorm_premium_config.json when your executor supports local files.")
+AddInfoLine(ConfigPage, "Save/load uses dma_wtf_extraction_config.json when your executor supports local files.")
 local function ApplyProfile(name)
     if name == "Loot" then
         Config.Aimbot.Enabled = false
@@ -727,6 +901,7 @@ local function ApplyProfile(name)
         Config.ESP.KeyLocations = false
     end
     SetStatus(string.upper(name) .. " PROFILE APPLIED", true)
+    Notify("Profile", name .. " profile loaded", 2.5, Theme.Accent)
 end
 AddSectionLabel(ConfigPage, "Quick profiles")
 AddButton(ConfigPage, "Loot profile", function() ApplyProfile("Loot") end)
@@ -735,14 +910,15 @@ AddButton(ConfigPage, "Minimal profile", function() ApplyProfile("Minimal") end)
 AddButton(ConfigPage, "Save configuration", function()
     local ok, data = pcall(function() return HttpService:JSONEncode(MakeConfigSnapshot()) end)
     if not ok then SetStatus("CONFIG SERIALIZE FAILED", false); return end
-    if writefile then writefile(ConfigPath, data); SetStatus("CONFIG SAVED", true)
-    elseif setclipboard then setclipboard(data); SetStatus("CONFIG COPIED", true)
+    if writefile then writefile(ConfigPath, data); SetStatus("CONFIG SAVED", true); Notify("Config", "Saved to disk", 2, Theme.Good)
+    elseif setclipboard then setclipboard(data); SetStatus("CONFIG COPIED", true); Notify("Config", "Copied to clipboard", 2, Theme.Accent)
     else SetStatus("FILE API NOT AVAILABLE", false) end
 end)
 AddButton(ConfigPage, "Load configuration", function()
     if not (isfile and readfile and isfile(ConfigPath)) then SetStatus("NO LOCAL CONFIG FOUND", false); return end
     local ok, decoded = pcall(function() return HttpService:JSONDecode(readfile(ConfigPath)) end)
-    if ok then ApplyConfig(decoded); SetStatus("CONFIG LOADED  •  REOPEN MENU", true) else SetStatus("CONFIG LOAD FAILED", false) end
+    if ok then ApplyConfig(decoded); SetStatus("CONFIG LOADED  •  REOPEN MENU", true); Notify("Config", "Loaded from disk", 2.5, Theme.Good)
+    else SetStatus("CONFIG LOAD FAILED", false) end
 end)
 AddButton(ConfigPage, "Copy configuration", function()
     local ok, data = pcall(function() return HttpService:JSONEncode(MakeConfigSnapshot()) end)
@@ -750,7 +926,7 @@ AddButton(ConfigPage, "Copy configuration", function()
 end)
 
 local function BuildWorkspaceIndex()
-    local lines = {"SANDSTORM WORLD SNAPSHOT", "PlaceId: " .. tostring(game.PlaceId), ""}
+    local lines = {"dma.wtf WORLD SNAPSHOT", "PlaceId: " .. tostring(game.PlaceId), ""}
     for _, item in ipairs(Workspace:GetChildren()) do
         if not item:IsA("Terrain") then table.insert(lines, string.format("%s [%s] — %d children", item.Name, item.ClassName, #item:GetChildren())) end
     end
@@ -764,8 +940,9 @@ AddButton(ConfigPage, "Copy world snapshot", function()
 end)
 AddSectionLabel(ConfigPage, "Session")
 AddButton(ConfigPage, "Unload script", function()
-    if getgenv and getgenv().SandstormPremiumUnload then
-        getgenv().SandstormPremiumUnload()
+    if getgenv and getgenv().DmaWtfExtractionUnload then
+        getgenv().DmaWtfExtractionUnload()
+        Notify("Session", "Script unloaded", 2, Color3.fromRGB(218, 128, 128))
     else
         SetStatus("UNLOAD NOT READY", false)
     end
@@ -781,6 +958,57 @@ AddSectionLabel(IntelPage, "Controls")
 AddInfoLine(IntelPage, "INSERT / DELETE / RIGHT CTRL  •  toggle menu")
 AddInfoLine(IntelPage, "RIGHT MOUSE  •  aim assist lock")
 
+-- ══════════════════════════════════════════════════════════════
+-- FLOATING WATERMARK (visible when menu is closed)
+-- ══════════════════════════════════════════════════════════════
+local Watermark = Instance.new("Frame")
+Watermark.Size = UDim2.fromOffset(240, 28)
+Watermark.Position = UDim2.fromOffset(14, 14)
+Watermark.BackgroundColor3 = Color3.fromRGB(12, 13, 17)
+Watermark.BackgroundTransparency = 0.12
+Watermark.BorderSizePixel = 0
+Watermark.Visible = false
+Watermark.Parent = ScreenGui
+Round(Watermark, 6)
+local WmStroke = Stroke(Watermark, Theme.Border, 0.4, 1)
+
+local WmAccent = Instance.new("Frame")
+WmAccent.Size = UDim2.new(0, 3, 1, -8)
+WmAccent.Position = UDim2.new(0, 5, 0, 4)
+WmAccent.BackgroundColor3 = Color3.fromRGB(112, 196, 150)
+WmAccent.BorderSizePixel = 0
+WmAccent.Parent = Watermark
+Round(WmAccent, 2)
+
+local WmText = Instance.new("TextLabel")
+WmText.Size = UDim2.new(1, -20, 1, 0)
+WmText.Position = UDim2.fromOffset(14, 0)
+WmText.BackgroundTransparency = 1
+WmText.RichText = true
+WmText.Text = 'dma.wtf <font color="#97a3b8">FREE</font>  <font color="#979ca8">•  0 FPS  •  0:00</font>'
+WmText.TextColor3 = Theme.Text
+WmText.Font = Enum.Font.GothamMedium
+WmText.TextSize = 10
+WmText.TextXAlignment = Enum.TextXAlignment.Left
+WmText.Parent = Watermark
+
+-- update watermark + footer every second
+task.spawn(function()
+    while ScriptAlive do
+        task.wait(1)
+        local elapsed = math.floor(os.clock() - sessionStart)
+        local mins = math.floor(elapsed / 60)
+        local secs = elapsed % 60
+        local timeStr = string.format("%d:%02d", mins, secs)
+        WmText.Text = string.format(
+            'dma.wtf <font color="#97a3b8">FREE</font>  <font color="#979ca8">•  %d FPS  •  %s</font>',
+            fpsValue, timeStr
+        )
+        Footer.Text = string.format("dma.wtf free v2.1  •  %s  •  %d FPS", timeStr, fpsValue)
+    end
+end)
+
+-- ══════════════════════════════════════════════════════════════
 -- UI TOGGLE (INSERT / DELETE / RIGHT CTRL)
 -- ══════════════════════════════════════════════════════════════
 local isTweening = false
@@ -789,28 +1017,32 @@ local function ToggleUI()
     isTweening = true
     Config.UIVisible = not Config.UIVisible
     if Config.UIVisible then
+        Watermark.Visible = false
         MainFrame.Visible = true
         WindowScale.Scale = 0.94
-        MainFrame.Position = UDim2.new(0.5, -395, 0.5, -246)
         local scaleTween = Tween(WindowScale, {Scale = 1}, 0.24, Enum.EasingStyle.Back)
-        Tween(MainFrame, {Position = UDim2.new(0.5, -395, 0.5, -260)}, 0.22, Enum.EasingStyle.Quart):Play()
         scaleTween:Play()
         scaleTween.Completed:Once(function() isTweening = false end)
+        Notify("Menu", "Panel opened", 1.5, Theme.Good)
     else
         local scaleTween = Tween(WindowScale, {Scale = 0.94}, 0.16, Enum.EasingStyle.Quart, Enum.EasingDirection.In)
-        Tween(MainFrame, {Position = UDim2.new(0.5, -395, 0.5, -246)}, 0.16, Enum.EasingStyle.Quart, Enum.EasingDirection.In):Play()
         scaleTween:Play()
         scaleTween.Completed:Once(function()
             MainFrame.Visible = false
             WindowScale.Scale = 1
-            MainFrame.Position = UDim2.new(0.5, -395, 0.5, -260)
+            Watermark.Visible = true
             isTweening = false
         end)
+        Notify("Menu", "Panel closed", 1.5, Theme.Muted)
     end
 end
+
+-- close button hookup
+CloseBtn.MouseButton1Click:Connect(ToggleUI)
+
 local ToggleInputConnection = UserInputService.InputBegan:Connect(function(input, processed)
     if processed then return end
-    if input.KeyCode == Enum.KeyCode.Delete or input.KeyCode == Enum.KeyCode.Insert or input.KeyCode == Enum.KeyCode.RightControl then
+    if input.KeyCode == Enum.KeyCode.Insert or input.KeyCode == Enum.KeyCode.Delete or input.KeyCode == Enum.KeyCode.RightControl then
         ToggleUI()
     end
 end)
@@ -899,7 +1131,7 @@ local function GetESP(id)
     end
     return ESPCache[id]
 end
-local function HideESP(id)
+local function HideESPDraw(id)
     if ESPCache[id] then
         local e = ESPCache[id]
         e.BoxOut.Visible = false; e.Box.Visible = false; e.Name.Visible = false
@@ -1248,15 +1480,15 @@ local function RenderCharacterESP(id, character, color, colorOccluded, isBot)
     local hum = character:FindFirstChildOfClass("Humanoid")
     local head = character:FindFirstChild("Head")
     if not hrp or not hum or hum.Health <= 0 then
-        HideESP(id)
+        HideESPDraw(id)
         return
     end
     local camPos = Camera.CFrame.Position
     local dist = (hrp.Position - camPos).Magnitude
-    if dist > Config.ESP.MaxDistance then HideESP(id) return end
+    if dist > Config.ESP.MaxDistance then HideESPDraw(id) return end
     local screenPos, onScreen = Camera:WorldToViewportPoint(hrp.Position)
     local topX, topY, bottomX, bottomY = GetCharacterScreenBounds(character)
-    if not onScreen or not topX then HideESP(id) return end
+    if not onScreen or not topX then HideESPDraw(id) return end
     local esp = GetESP(id)
     local visible = IsVisible(head or hrp, character)
     local drawColor = visible and color or colorOccluded
@@ -1368,7 +1600,7 @@ local RenderConnection = RunService.RenderStepped:Connect(function()
     end
 
     if not Config.ESP.Enabled then
-        for id in pairs(ESPCache) do HideESP(id) end
+        for id in pairs(ESPCache) do HideESPDraw(id) end
         for id in pairs(SimpleESPCache) do HideSimpleESP(id) end
         ExtractHUD.Visible = false
         return
@@ -1388,7 +1620,7 @@ local RenderConnection = RunService.RenderStepped:Connect(function()
         end
     end
     for id in pairs(activePlayerIDs) do
-        if not currentPlayerIDs[id] then HideESP(id) end
+        if not currentPlayerIDs[id] then HideESPDraw(id) end
     end
     activePlayerIDs = currentPlayerIDs
 
@@ -1405,7 +1637,7 @@ local RenderConnection = RunService.RenderStepped:Connect(function()
         end
     end
     for id in pairs(activeBotIDs) do
-        if not currentBotIDs[id] then HideESP(id) end
+        if not currentBotIDs[id] then HideESPDraw(id) end
     end
     activeBotIDs = currentBotIDs
 
@@ -1499,7 +1731,7 @@ local RenderConnection = RunService.RenderStepped:Connect(function()
                     currentSimpleIDs[id] = true
                     local dist = (part.Position - camPos).Magnitude
                     if dist <= Config.ESP.MaxDistance then
-                        loadScreenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+                        local loadScreenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
                         if onScreen then
                             local esp = GetSimpleESP(id)
                             esp.Label.Position = Vector2.new(loadScreenPos.X, loadScreenPos.Y)
@@ -1565,12 +1797,17 @@ local function Cleanup()
     for _, e in pairs(SimpleESPCache) do pcall(function() e.Label:Remove() end) end
     pcall(function() ScreenGui:Destroy() end)
 end
-if getgenv then getgenv().SandstormPremiumUnload = Cleanup end
+if getgenv then getgenv().DmaWtfExtractionUnload = Cleanup end
 game:GetService("Players").LocalPlayer.CharacterRemoving:Connect(function()
     if not ScriptAlive then return end
-    for id in pairs(ESPCache) do HideESP(id) end
+    for id in pairs(ESPCache) do HideESPDraw(id) end
     for id in pairs(SimpleESPCache) do HideSimpleESP(id) end
 end)
 
-print("[+] Sandstorm Private Suite v1.0 Loaded — DesertStorm [EXTRACTION]")
-print("[+] Toggle UI: INSERT / DELETE | Aimbot: Hold Right-Click")
+-- ══════════════════════════════════════════════════════════════
+-- LOAD NOTIFICATION
+-- ══════════════════════════════════════════════════════════════
+Notify("dma.wtf free", "Loaded — INSERT / DELETE / RIGHT CTRL to toggle", 3.5, Theme.Good)
+
+print("[+] dma.wtf free v2.1 loaded — DesertStorm [EXTRACTION]")
+print("[+] Toggle UI: INSERT / DELETE / RIGHT CTRL | Aimbot: Hold Right-Click")
